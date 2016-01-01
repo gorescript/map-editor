@@ -2,6 +2,9 @@
   "name": "gorescript-map-editor",
   "version": "1.0.0",
   "private": true,
+  "scripts": {
+	"plato": "plato -r -d report src\\js"
+  },
   "devDependencies": {
     "babel-core": "^6.3.26",
     "babel-loader": "^6.2.0",
