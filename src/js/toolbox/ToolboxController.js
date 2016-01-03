@@ -1,38 +1,38 @@
-import ActionTypes from "./ActionTypes";
-import EditorModes from "./EditorModes";
+import ActionTypes from "../editor/ActionTypes";
+import EditorModes from "../editor/EditorModes";
 
 import MapManager from "../core/MapManager";
 
-import EntityTools from "./tools/EntityTools";
-import SectorTools from "./tools/SectorTools";
-import SegmentTools from "./tools/SegmentTools";
-import ZoneTools from "./tools/ZoneTools";
+import EntityTools from "../editor/tools/EntityTools";
+import SectorTools from "../editor/tools/SectorTools";
+import SegmentTools from "../editor/tools/SegmentTools";
+import ZoneTools from "../editor/tools/ZoneTools";
 
-function MapEditor() {
-	this.layer = GS.MapLayers.Segment;
+export default class ToolboxController {
+	constructor($timeout) {
+		this.$timeout = $timeout;
+		this.MapLayers = GS.MapLayers;
+		this.EditorModes = EditorModes;
 
-	this.keys = {
-		Escape: 27,
-		Delete: 46,
-		A: 65,
-		Z: 90,
-		G: 71,
-		Minus: 189,
-		Plus: 187,
-		Zero: 48,
-	};
+		this.layer = GS.MapLayers.Segment;
 
-	this.actionLog = [];
-	this.init();
-};
+		this.keys = {
+			Escape: 27,
+			Delete: 46,
+			A: 65,
+			Z: 90,
+			G: 71,
+			Minus: 189,
+			Plus: 187,
+			Zero: 48,
+		};
 
-MapEditor.prototype = {
-	init: function() {
+		this.actionLog = [];
+		this.init();
+	}
+
+	init() {
 		var that = this;
-
-		$(document).on("contextmenu", function(){
-			return false;
-		});
 
 		this.canvasContainer = document.getElementById("canvas-container");
 		this.menuContainer = document.getElementById("menu-container");
@@ -84,15 +84,13 @@ MapEditor.prototype = {
 		$(this.canvasContainer).show();
 		$(this.menuContainer).css("display", "block");
 
-		$("#map-name").val(that.mapManager.map.name);
-
 		this.importTestMap();
-
 		this.draw();
-	},
+	}
 
-	initModifyOriginEvent: function() {
+	initModifyOriginEvent() {
 		var that = this;
+
 		$(document).mousemove(function(e) {
 			if (GS.InputHelper.rightMouseDown) {
 				var mx = GS.InputHelper.mouseX;
@@ -112,9 +110,9 @@ MapEditor.prototype = {
 				$("#map-canvas").css("cursor", "default");
 			}
 		});
-	},
+	}
 
-	initComponents: function() {
+	initComponents() {
 		var that = this;
 		var inCanvas = function(mx, my) { return that.inCanvas(mx, my); };
 
@@ -130,16 +128,41 @@ MapEditor.prototype = {
 		this.layerTools[GS.MapLayers.Entity].init();
 		this.layerTools[GS.MapLayers.Zone] = new ZoneTools(this.mapManager, this.actionLog, inCanvas);
 		this.layerTools[GS.MapLayers.Zone].init();
-	},
+	}
 
-	initMenuControls: function() {
-		var that = this;
+	initMenuControls() {
+		this.mapManager.addEventListener("mapLoad", () => this.$timeout());
+		this.mapManager.addEventListener("mapLoad", () => window.map = this.mapManager.map);
+		this.mapManager.addEventListener("triangleCountChange", () => this.$timeout());
 
-		var $mapName = $("#map-name");
-		this.mapManager.addEventListener("mapLoad", function() {
-			$mapName.val(that.mapManager.map.name);
-			that.updatePlayerStartPosition();
+		for (var i in this.layerTools) {
+			this.layerTools[i].initMenuControls();
+		}
+
+		$("#field-import").change(() => {
+			this.importMap();
 		});
+	}
+
+	onEditorModeChange() {
+		var mode = this.layerTools[this.layer].mode;
+
+		for (var i in this.layerTools) {
+			this.layerTools[i].mode = mode;
+		}
+		this.layerTools[GS.MapLayers.Sector].mode = EditorModes.Selecting;
+	}
+
+	onSaveMapClick() {
+		var map = this.mapManager.getMap();
+		this.saveMap(map);
+	}
+
+	validateMapName(value) {
+		var validate = (name) => {
+			var re = /^[0-9a-zA-Z_]+$/;
+			return re.exec(name);
+		};
 
 		var mapNameError = [
 			"invalid map name:",
@@ -147,155 +170,40 @@ MapEditor.prototype = {
 			"name must be at least 1 character long",
 		].join("\n");
 
-		$mapName.on("change.mapEditor", function() {
-			var name = $(this).val();
-			if (that.validateMapName(name)) {
-				that.mapManager.map.name = name;
-			} else {
-				$(this).val(that.mapManager.map.name);
-				alert(mapNameError);
-			}
-		});
-
-		$("#chk-has-script").on("change.mapEditor", function() {
-			that.mapManager.map.hasScript = $(this).is(":checked");
-		});
-
-		this.mapManager.addEventListener("triangleCountChange", function() { that.updateTriangles(); });
-
-		$("#triangle-field").text(this.mapManager.map.triangleCount);
-
-		$("#player-start-pos-x").on("change.mapEditor", function() {
-			var n = parseInt($(this).val());
-			that.mapManager.map.playerStartPosition.x = isNaN(n) ? 0 : n;
-		});
-		$("#player-start-pos-y").on("change.mapEditor", function() {
-			var n = parseInt($(this).val());
-			that.mapManager.map.playerStartPosition.y = isNaN(n) ? 0 : n;
-		});
-
-		var $gridCellSize = $("#grid-cell-size");
-		$gridCellSize.val(that.mapManager.map.cellSize);
-		$gridCellSize.on("change.mapEditor", function() {
-			var n = parseInt($(this).val());
-			that.mapManager.map.cellSize = isNaN(n) ? 0 : Math.abs(n);
-		});
-
-		$("#chk-snap-to-grid").on("change.mapEditor", function() {
-			that.mapManager.snapToGrid = $(this).is(":checked");
-			$gridCellSize.prop("disabled", !that.mapManager.snapToGrid);
-		});
-
-		$("#radio-editor-mode").buttonset();
-		$("#radio-editor-mode input:radio").change(function() {
-			var mode;
-			if ($(this).attr("id").indexOf("draw") != -1) {
-				mode = EditorModes.Drawing;
-			} else
-			if ($(this).attr("id").indexOf("select") != -1) {
-				mode = EditorModes.Selecting;
-			}
-
-			for (var i in that.layerTools) {
-				that.layerTools[i].mode = mode;
-			}
-			that.layerTools[GS.MapLayers.Sector].mode = EditorModes.Selecting;
-		});
-
-		var $editorMode = $("#editor-mode");
-		var $segTools = $("#seg-tools-container");
-		var $secTools = $("#sec-tools-container");
-		var $nttTools = $("#ntt-tools-container");
-		var $zoneTools = $("#zone-tools-container");
-		$("#radio-layer input:radio").change(function() {
-			$segTools.hide();
-			$secTools.hide();
-			$nttTools.hide();
-			$zoneTools.hide();
-
-			if ($(this).attr("id").indexOf("seg") != -1) {
-				that.layer = GS.MapLayers.Segment;
-				$segTools.show();
-				$editorMode.show();
-			} else
-			if ($(this).attr("id").indexOf("sec") != -1) {
-				that.layer = GS.MapLayers.Sector;
-				$secTools.show();
-				$editorMode.hide();
-			} else
-			if ($(this).attr("id").indexOf("ntt") != -1) {
-				that.layer = GS.MapLayers.Entity;
-				$nttTools.show();
-				$editorMode.show();
-			} else
-			if ($(this).attr("id").indexOf("zone") != -1) {
-				that.layer = GS.MapLayers.Zone;
-				$zoneTools.show();
-				$editorMode.show();
-			}
-		});
-
-		for (var i in this.layerTools) {
-			this.layerTools[i].initMenuControls();
+		if (validate(value)) {
+			return { value: value };
+		} else {
+			alert(mapNameError);
+			return false;
 		}
+	}
 
-		$("#button-undo").click(function() {
-			that.undoLastAction();
-		});
+	validateInteger(value) {
+		if (!isNaN(value)) {
+			return { value: parseInt(value, 10) };
+		} else {
+			return false;
+		}
+	}
 
-		$("#field-import").change(function() {
-			that.importMap();
-		});
+	validatePositiveInteger(value) {
+		if (!isNaN(value) && parseInt(value, 10) >= 0) {
+			return { value: parseInt(value, 10) };
+		} else {
+			return false;
+		}
+	}
 
-		$("#button-import").click(function() {
-			that.importMap();
-		});
-
-		$("#button-download").click(function() {
-			that.mapManager.downloadMap();
-		});
-
-		$("#button-save").click(function() {
-			var map = that.mapManager.getMap();
-			that.saveMap(map);
-		});
-
-		$("#button-clear").click(function() {
-			that.clearMap();
-		});
-
-		$("input[type=text]").keydown(function(e) {
-			if (e.which === 13) {
-				e.preventDefault();
-				$(this).trigger("change");
-			}
-		});
-	},
-
-	validateMapName: function(name) {
-		var re = /^[0-9a-zA-Z_]+$/;
-		return re.exec(name);
-	},
-
-	saveMap: function(map) {
+	saveMap(map) {
 		window.localStorage.testMap = JSON.stringify(map);
-	},
+	}
 
-	updatePlayerStartPosition: function() {
-		$("#player-start-pos-x").val(this.mapManager.map.playerStartPosition.x);
-		$("#player-start-pos-y").val(this.mapManager.map.playerStartPosition.y);
-	},
-
-	updateTriangles: function() {
-		$("#triangle-field").text(this.mapManager.map.triangleCount);
-	},
-
-	clearMap: function() {
+	clearMap() {
 		window.localStorage.removeItem("testMap");
 		window.location.reload();
-	},
+	}
 
-	importTestMap: function() {
+	importTestMap() {
 		var testMap = window.localStorage.testMap;
 
 		if (testMap) {
@@ -306,9 +214,9 @@ MapEditor.prototype = {
 				this.layerTools[i].resetSelection();
 			}
 		}
-	},
+	}
 
-	importMap: function() {
+	importMap() {
 		var that = this;
 
 		var $fieldImport = $("#field-import");
@@ -334,18 +242,20 @@ MapEditor.prototype = {
 		fileReader.readAsText(file);
 
 		$fieldImport.val("");
-	},
+	}
 
-	update: function() {
+	update() {
 		var mx = GS.InputHelper.mouseX;
 		var my = GS.InputHelper.mouseY;
+
 		if (this.inCanvas(mx, my)) {
-			var v = new THREE.Vector2(mx, my);
+			let v = new THREE.Vector2(mx, my);
 			this.mapManager.convertToGridCellCoords(v);
-			$("#position-field").text("X: " + v.x.toFixed(0) + ", Y: " + v.y.toFixed(0));
+
+			$("#position-field").text(`X: ${v.x.toFixed(0)}, Y: ${v.y.toFixed(0)}`);
 		}
 		else {
-			$("#position-field").text("X: ---, Y: ---");
+			$("#position-field").text(`X: ---, Y: ---`);
 		}
 
 		this.layerTools[this.layer].update();
@@ -387,6 +297,7 @@ MapEditor.prototype = {
 
 		while (GS.InputHelper.mouseWheelEvents.length > 0) {
 			var delta = GS.InputHelper.mouseWheelEvents.shift();
+
 			if (delta < 0) {
 				this.mapManager.modifyZoom(-1);
 			}
@@ -394,9 +305,9 @@ MapEditor.prototype = {
 				this.mapManager.modifyZoom(1);
 			}
 		}
-	},
+	}
 
-	showGoTo: function() {
+	showGoTo() {
 		var str = window.prompt("Go to layer object ID:", "");
 		var n = parseInt(str);
 		if (!isNaN(n)) {
@@ -405,13 +316,13 @@ MapEditor.prototype = {
 			}
 		}
 		alert("layer object not found");
-	},
+	}
 
-	inCanvas: function(mx, my) {
+	inCanvas(mx, my) {
 		return mx < this.canvasWidth;
-	},
+	}
 
-	undoLastAction: function() {
+	undoLastAction() {
 		var action = this.actionLog.pop();
 		if (action) {
 			switch (action.type) {
@@ -423,57 +334,51 @@ MapEditor.prototype = {
 					break;
 			}
 		}
-	},
+	}
 
-	draw: function() {
+	draw() {
 		var that = this;
 		this.bufferCtx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
 		this.mapManager.drawLayer(this.bufferCtx, this.layer, this.layerTools[this.layer].getSelected());
 		this.update();
 
 		this.screenCtx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-		if (this.drawOtherLayers()) {
-			this.screenCtx.globalAlpha = 0.25;
-			this.screenCtx.drawImage(this.translucentCanvas, 0, 0);
-			this.screenCtx.globalAlpha = 1;
-		}
+		this.drawOtherLayers();
+
+		this.screenCtx.globalAlpha = 0.25;
+		this.screenCtx.drawImage(this.translucentCanvas, 0, 0);
+		this.screenCtx.globalAlpha = 1;
 		this.screenCtx.drawImage(this.bufferCanvas, 0, 0);
 
 		requestAnimationFrame(function() { that.draw(); });
-	},
+	}
 
-	drawOtherLayers: function() {
-		var drawToScreen = false;
+	drawOtherLayers() {
 		switch (this.layer) {
 			case GS.MapLayers.Segment:
 				this.translucentCtx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
 				this.mapManager.drawLayer(this.translucentCtx, GS.MapLayers.Sector);
 				this.mapManager.drawLayer(this.translucentCtx, GS.MapLayers.Entity);
-				drawToScreen = true;
 				break;
 			case GS.MapLayers.Entity:
 				this.translucentCtx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
 				this.mapManager.drawLayer(this.translucentCtx, GS.MapLayers.Sector);
 				this.mapManager.drawLayer(this.translucentCtx, GS.MapLayers.Segment);
-				drawToScreen = true;
 				break;
 			case GS.MapLayers.Sector:
 				this.translucentCtx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
 				this.mapManager.drawLayer(this.translucentCtx, GS.MapLayers.Entity);
-				drawToScreen = true;
 				break;
 			case GS.MapLayers.Zone:
 				this.translucentCtx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
 				this.mapManager.drawLayer(this.translucentCtx, GS.MapLayers.Sector);
 				this.mapManager.drawLayer(this.translucentCtx, GS.MapLayers.Segment);
 				this.mapManager.drawLayer(this.translucentCtx, GS.MapLayers.Entity);
-				drawToScreen = true;
 				break;
 		}
-		return drawToScreen;
-	},
+	}
 
-	calculateSizes: function() {
+	calculateSizes() {
 		this.minWidth = 1280;
 		this.minHeight = 720;
 
@@ -481,9 +386,9 @@ MapEditor.prototype = {
 		this.menuHeight = Math.max(window.innerHeight, this.minHeight);
 		this.canvasWidth = Math.max(window.innerWidth - this.menuWidth, this.minWidth - this.menuWidth);
 		this.canvasHeight = Math.max(window.innerHeight, this.minHeight);
-	},
+	}
 
-	onResize: function() {
+	onResize() {
 		this.calculateSizes();
 
 		this.screenCanvas.width = this.canvasWidth;
@@ -498,7 +403,9 @@ MapEditor.prototype = {
 		this.menuContainer.style.width = this.menuWidth + "px";
 		this.menuContainer.style.height = this.menuHeight + "px";
 		this.menuContainer.style.marginLeft = this.canvasWidth + "px";
-	},
-};
+	}
+}
 
-export default MapEditor;
+ToolboxController.$inject = [
+	"$timeout"
+];

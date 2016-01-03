@@ -1,6 +1,19 @@
-import MapEditor from "./editor/MapEditor";
+var app = angular.module("map-editor", []);
 
-var MAP_EDITOR;
-window.addEventListener("load", function() {
-	MAP_EDITOR = new MapEditor();
-}, false);
+import validate from "./common/validate";
+app.directive("validate", validate);
+
+import toolbox from "./toolbox/toolbox";
+app.directive("toolbox", toolbox);
+
+import ToolboxController from "./toolbox/ToolboxController";
+app.controller("ToolboxController", ToolboxController);
+
+app.config(() => {
+});
+
+app.run(() => {
+	$(document).on("contextmenu", function(){
+		return false;
+	});
+});

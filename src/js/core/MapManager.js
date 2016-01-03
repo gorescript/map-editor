@@ -816,7 +816,6 @@ MapManager.prototype = {
 			return;
 		}
 
-		map.cellSize = this.map.cellSize;
 		this.map = map;
 
 		if (this.map.playerStartPosition !== undefined) {

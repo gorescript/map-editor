@@ -3,7 +3,8 @@ var files = [
 	"jquery-ui.min",
 	"jszip.min",
 	"three.min",
-	"polyk"
+	"polyk",
+	"angular.min"
 ];
 
 files = files.map(function(item) {
