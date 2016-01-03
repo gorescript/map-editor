@@ -2,3 +2,5 @@ dist/
 node_modules/
 report/
 .DS_Store
+*.sublime-project
+*.sublime-workspace

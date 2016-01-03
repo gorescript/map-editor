@@ -849,7 +849,7 @@ MapManager.prototype = {
 		sector.doorMaxHeight = (sector.doorMaxHeight !== undefined) ? sector.doorMaxHeight : 16;
 		sector.elevator = (sector.elevator !== undefined) ? sector.elevator : false;
 		sector.elevatorMaxHeight = (sector.elevatorMaxHeight !== undefined) ? sector.elevatorMaxHeight : 16;
-		sector.useVertexColors = false;
+		sector.useVertexColors = (sector.useVertexColors !== undefined) ? sector.useVertexColors : false;
 		sector.floorTexId = sector.floorTexId || "wall";
 		sector.ceilTexId = sector.ceilTexId || "wall";
 		sector.sideTexId = sector.sideTexId || "wall";
