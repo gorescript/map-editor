@@ -3,11 +3,8 @@ var app = angular.module("map-editor", []);
 import validate from "./common/validate";
 app.directive("validate", validate);
 
-import toolbox from "./toolbox/toolbox";
-app.directive("toolbox", toolbox);
-
-import ToolboxController from "./toolbox/ToolboxController";
-app.controller("ToolboxController", ToolboxController);
+import component from "./toolbox/toolbox";
+app.component("toolbox", component);
 
 app.config(() => {
 });
