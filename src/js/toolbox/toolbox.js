@@ -1,7 +1,7 @@
 export default function toolbox($compile, $timeout, $window) {
 	return {
 		restrict: "E",
-		templateUrl: "toolbox/toolbox.html",
+		template: require("./toolbox.html"),
 		replace: true,
 		scope: {},
 
