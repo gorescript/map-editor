@@ -1,14 +1,9 @@
-import ActionTypes from "../editor/ActionTypes";
-import EditorModes from "../editor/EditorModes";
-
-import MapManager from "../core/MapManager";
-
-import EntityTools from "../editor/tools/EntityTools";
-import SectorTools from "../editor/tools/SectorTools";
-import SegmentTools from "../editor/tools/SegmentTools";
-import ZoneTools from "../editor/tools/ZoneTools";
+import ActionTypes from "../common/enums/ActionTypes";
+import EditorModes from "../common/enums/EditorModes";
 
 import CanvasManager from "../common/canvas/CanvasManager";
+
+import MapManager from "../core/MapManager";
 
 export default class ToolboxController {
 	constructor($timeout) {
@@ -73,30 +68,31 @@ export default class ToolboxController {
 	}
 
 	initComponents() {
-		var inCanvas = (mx, my) => this.inCanvas(mx, my);
-
 		this.mapManager = new MapManager(this.canvas.bufferCanvas, this.canvas.bufferCtx);
 		this.mapManager.init();
 
 		this.layerTools = {};
-		this.layerTools[GS.MapLayers.Segment] = new SegmentTools(this.mapManager, this.actionLog, inCanvas);
-		this.layerTools[GS.MapLayers.Segment].init();
-		this.layerTools[GS.MapLayers.Sector] = new SectorTools(this.mapManager, this.actionLog, inCanvas);
-		this.layerTools[GS.MapLayers.Sector].init();
-		this.layerTools[GS.MapLayers.Entity] = new EntityTools(this.mapManager, this.actionLog, inCanvas);
-		this.layerTools[GS.MapLayers.Entity].init();
-		this.layerTools[GS.MapLayers.Zone] = new ZoneTools(this.mapManager, this.actionLog, inCanvas);
-		this.layerTools[GS.MapLayers.Zone].init();
+		// this.layerTools[GS.MapLayers.Segment] = new SegmentTools(this.mapManager, this.actionLog, inCanvas);
+		// this.layerTools[GS.MapLayers.Segment].init();
+		// this.layerTools[GS.MapLayers.Sector] = new SectorTools(this.mapManager, this.actionLog, inCanvas);
+		// this.layerTools[GS.MapLayers.Sector].init();
+		// this.layerTools[GS.MapLayers.Entity] = new EntityTools(this.mapManager, this.actionLog, inCanvas);
+		// this.layerTools[GS.MapLayers.Entity].init();
+		// this.layerTools[GS.MapLayers.Zone] = new ZoneTools(this.mapManager, this.actionLog, inCanvas);
+		// this.layerTools[GS.MapLayers.Zone].init();
+	}
+
+	onLayerToolInit(layer, layerTool) {
+		var inCanvas = (mx, my) => this.inCanvas(mx, my);
+
+		this.layerTools[layer] = layerTool;
+		this.layerTools[layer].init(this.mapManager, this.actionLog, inCanvas, this.$timeout);
 	}
 
 	initMenuControls() {
 		this.mapManager.addEventListener("mapLoad", () => this.$timeout());
 		this.mapManager.addEventListener("mapLoad", () => window.map = this.mapManager.map);
 		this.mapManager.addEventListener("triangleCountChange", () => this.$timeout());
-
-		for (var i in this.layerTools) {
-			this.layerTools[i].initMenuControls();
-		}
 
 		$("#field-import").change(() => {
 			this.importMap();
@@ -109,7 +105,7 @@ export default class ToolboxController {
 		for (var i in this.layerTools) {
 			this.layerTools[i].mode = mode;
 		}
-		this.layerTools[GS.MapLayers.Sector].mode = EditorModes.Selecting;
+		//this.layerTools[GS.MapLayers.Sector].mode = EditorModes.Selecting;
 	}
 
 	onSaveMapClick() {
@@ -207,7 +203,10 @@ export default class ToolboxController {
 	update() {
 		this.updatePositionLabel();
 
-		this.layerTools[this.layer].update();
+		// TODO: remove if
+		if (this.layerTools[this.layer]) {
+			this.layerTools[this.layer].update();
+		}
 
 		this.processKeyboardInput();
 		this.processZoom();
@@ -312,7 +311,14 @@ export default class ToolboxController {
 
 	draw() {
 		this.canvas.clearBuffer();
-		this.mapManager.drawLayer(this.canvas.bufferCtx, this.layer, this.layerTools[this.layer].getSelected());
+
+		// TODO: remove if
+		var selected;
+		if (this.layerTools[this.layer]) {
+			selected = this.layerTools[this.layer].getSelected();
+		}
+		this.mapManager.drawLayer(this.canvas.bufferCtx, this.layer, selected);
+
 		this.update();
 
 		this.canvas.clearScreen();

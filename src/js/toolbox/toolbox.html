@@ -268,24 +268,7 @@
 		</span>
 	</span>
 
-	<span ng-show="ctrl.layer === ctrl.MapLayers.Zone">
-		<div class="menu-label">Zone count</div>
-		<div class="menu-field">
-			<p id="zone-count">0</p>
-		</div>
-
-		<span id="zone-tools-detail" class="detail">
-			<div class="menu-separator"></div>
-			<div class="menu-label">Zone ID</div>
-			<div class="menu-field">
-				<p id="zone-selected-id"></p>
-			</div>
-			<div class="menu-label">Zone name</div>
-			<div class="menu-field">
-				<input type="text" id="zone-selected-name">
-			</div>
-		</span>
-	</span>
+	<zone-tools ng-show="ctrl.layer === ctrl.MapLayers.Zone"></zone-tools>
 
 	<span id="menu-footer">
 		<div class="menu-separator"></div>

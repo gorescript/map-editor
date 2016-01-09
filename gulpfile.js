@@ -10,14 +10,17 @@ gulp.task("default", function() {
 	run();
 
 	gulp.watch([
-		"./src/js/**/*.html",
 		"./src/index.html",
 		"./src/img/**/*",
 		"./src/fonts/**/*"
-		], ["copy"]);
+	], ["copy"]);
 
 	gulp.watch(["./src/**/*.less"], ["less"]);
-	gulp.watch(["./src/js/**/*.js"], ["webpack"]);
+
+	gulp.watch([
+		"./src/js/**/*.html",
+		"./src/js/**/*.js"
+	], ["webpack"]);
 });
 
 function run() {
