@@ -8,11 +8,16 @@ import SectorTools from "../editor/tools/SectorTools";
 import SegmentTools from "../editor/tools/SegmentTools";
 import ZoneTools from "../editor/tools/ZoneTools";
 
+import CanvasManager from "../common/canvas/CanvasManager";
+
 export default class ToolboxController {
 	constructor($timeout) {
 		this.$timeout = $timeout;
+
 		this.MapLayers = GS.MapLayers;
 		this.EditorModes = EditorModes;
+
+		this.canvas = new CanvasManager();
 
 		this.layer = GS.MapLayers.Segment;
 
@@ -32,80 +37,35 @@ export default class ToolboxController {
 	}
 
 	init() {
-		var that = this;
-
-		this.canvasContainer = document.getElementById("canvas-container");
-		this.menuContainer = document.getElementById("menu-container");
-
-		this.calculateSizes();
-
-		var screenCanvas = document.createElement("canvas");
-		screenCanvas.width = this.canvasWidth;
-		screenCanvas.height = this.canvasHeight;
-		screenCanvas.style.backgroundColor = "rgba(255, 255, 255, 1)";
-		screenCanvas.id = "map-canvas";
-		$(this.canvasContainer).append(screenCanvas);
-		this.screenCanvas = screenCanvas;
-
-		var screenCtx = screenCanvas.getContext("2d");
-		screenCtx.globalCompositeOperation = "source-over";
-		screenCtx.save();
-		this.screenCtx = screenCtx;
-
-		var bufferCanvas = document.createElement("canvas");
-		bufferCanvas.width = this.canvasWidth;
-		bufferCanvas.height = this.canvasHeight;
-		bufferCanvas.style.backgroundColor = "rgba(255, 255, 255, 1)";
-		this.bufferCanvas = bufferCanvas;
-
-		var bufferCtx = bufferCanvas.getContext("2d");
-		bufferCtx.globalCompositeOperation = "source-over";
-		bufferCtx.save();
-		this.bufferCtx = bufferCtx;
-
-		var translucentCanvas = document.createElement("canvas");
-		translucentCanvas.width = this.canvasWidth;
-		translucentCanvas.height = this.canvasHeight;
-		translucentCanvas.style.backgroundColor = "rgba(255, 255, 255, 1)";
-		this.translucentCanvas = translucentCanvas;
-
-		var translucentCtx = translucentCanvas.getContext("2d");
-		translucentCtx.globalCompositeOperation = "source-over";
-		translucentCtx.save();
-		this.translucentCtx = translucentCtx;
-
-		window.addEventListener("resize", function() { that.onResize(); }, false);
-		this.onResize();
+		this.canvas.init();
 
 		this.initComponents();
 		this.initMenuControls();
 		this.initModifyOriginEvent();
 
-		$(this.canvasContainer).show();
-		$(this.menuContainer).css("display", "block");
+		$(this.canvas.canvasContainer).show();
+		$(this.canvas.menuContainer).css("display", "block");
 
 		this.importTestMap();
 		this.draw();
 	}
 
 	initModifyOriginEvent() {
-		var that = this;
-
-		$(document).mousemove(function(e) {
+		$(document).mousemove((e) => {
 			if (GS.InputHelper.rightMouseDown) {
 				var mx = GS.InputHelper.mouseX;
 				var my = GS.InputHelper.mouseY;
-				var dx = (mx - that.ox);
-				var dy = (my - that.oy);
-				that.ox = mx;
-				that.oy = my;
+				var dx = (mx - this.ox);
+				var dy = (my - this.oy);
+				this.ox = mx;
+				this.oy = my;
 
-				that.mapManager.modifyOrigin(dx, dy);
+				this.mapManager.modifyOrigin(dx, dy);
 
 				$("#map-canvas").css("cursor", "move");
 			} else {
-				that.ox = GS.InputHelper.mouseX;
-				that.oy = GS.InputHelper.mouseY;
+				this.ox = GS.InputHelper.mouseX;
+				this.oy = GS.InputHelper.mouseY;
 
 				$("#map-canvas").css("cursor", "default");
 			}
@@ -113,10 +73,9 @@ export default class ToolboxController {
 	}
 
 	initComponents() {
-		var that = this;
-		var inCanvas = function(mx, my) { return that.inCanvas(mx, my); };
+		var inCanvas = (mx, my) => this.inCanvas(mx, my);
 
-		this.mapManager = new MapManager(this.bufferCanvas, this.bufferCtx);
+		this.mapManager = new MapManager(this.canvas.bufferCanvas, this.canvas.bufferCtx);
 		this.mapManager.init();
 
 		this.layerTools = {};
@@ -217,34 +176,44 @@ export default class ToolboxController {
 	}
 
 	importMap() {
-		var that = this;
+		var importField = $("#field-import");
+		var files = importField[0].files;
 
-		var $fieldImport = $("#field-import");
-
-		var files = $fieldImport[0].files;
 		if (files === undefined || files.length === 0) {
-			$fieldImport.trigger("click");
+			importField.trigger("click");
 			return;
 		}
-		var file = files[0];
 
+		var file = files[0];
 		var fileReader = new FileReader();
-		fileReader.onload = function(e) {
-			that.mapManager.importMap(e.target.result);
-			that.actionLog.length = 0;
-			for (var i in that.layerTools) {
-				that.layerTools[i].resetSelection();
+
+		fileReader.onload = (e) => {
+			this.mapManager.importMap(e.target.result);
+			this.actionLog.length = 0;
+
+			for (var i in this.layerTools) {
+				this.layerTools[i].resetSelection();
 			}
 		};
+
 		fileReader.onerror = function(e) {
 			alert("File read error: " + e.target.error.code);
 		};
-		fileReader.readAsText(file);
 
-		$fieldImport.val("");
+		fileReader.readAsText(file);
+		importField.val("");
 	}
 
 	update() {
+		this.updatePositionLabel();
+
+		this.layerTools[this.layer].update();
+
+		this.processKeyboardInput();
+		this.processZoom();
+	}
+
+	updatePositionLabel() {
 		var mx = GS.InputHelper.mouseX;
 		var my = GS.InputHelper.mouseY;
 
@@ -257,9 +226,9 @@ export default class ToolboxController {
 		else {
 			$("#position-field").text(`X: ---, Y: ---`);
 		}
+	}
 
-		this.layerTools[this.layer].update();
-
+	processKeyboardInput() {
 		GS.InputHelper.checkPressedKeys();
 
 		if (!GS.InputHelper.keysPressed && GS.InputHelper.ctrl && GS.InputHelper.isKeyDown(this.keys.A)) {
@@ -294,7 +263,9 @@ export default class ToolboxController {
 		if (!GS.InputHelper.keysPressed && GS.InputHelper.ctrl && GS.InputHelper.isKeyDown(this.keys.Zero)) {
 			this.mapManager.resetZoom();
 		}
+	}
 
+	processZoom() {
 		while (GS.InputHelper.mouseWheelEvents.length > 0) {
 			var delta = GS.InputHelper.mouseWheelEvents.shift();
 
@@ -310,20 +281,23 @@ export default class ToolboxController {
 	showGoTo() {
 		var str = window.prompt("Go to layer object ID:", "");
 		var n = parseInt(str);
+
 		if (!isNaN(n)) {
 			if (this.layerTools[this.layer].goTo(n)) {
 				return;
 			}
 		}
+
 		alert("layer object not found");
 	}
 
 	inCanvas(mx, my) {
-		return mx < this.canvasWidth;
+		return mx < this.canvas.canvasWidth;
 	}
 
 	undoLastAction() {
 		var action = this.actionLog.pop();
+
 		if (action) {
 			switch (action.type) {
 				case ActionTypes.Add:
@@ -337,72 +311,42 @@ export default class ToolboxController {
 	}
 
 	draw() {
-		var that = this;
-		this.bufferCtx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-		this.mapManager.drawLayer(this.bufferCtx, this.layer, this.layerTools[this.layer].getSelected());
+		this.canvas.clearBuffer();
+		this.mapManager.drawLayer(this.canvas.bufferCtx, this.layer, this.layerTools[this.layer].getSelected());
 		this.update();
 
-		this.screenCtx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+		this.canvas.clearScreen();
 		this.drawOtherLayers();
 
-		this.screenCtx.globalAlpha = 0.25;
-		this.screenCtx.drawImage(this.translucentCanvas, 0, 0);
-		this.screenCtx.globalAlpha = 1;
-		this.screenCtx.drawImage(this.bufferCanvas, 0, 0);
+		this.canvas.flip();
 
-		requestAnimationFrame(function() { that.draw(); });
+		requestAnimationFrame(() => this.draw());
 	}
 
 	drawOtherLayers() {
+		this.canvas.clearTranslucent();
+
 		switch (this.layer) {
 			case GS.MapLayers.Segment:
-				this.translucentCtx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-				this.mapManager.drawLayer(this.translucentCtx, GS.MapLayers.Sector);
-				this.mapManager.drawLayer(this.translucentCtx, GS.MapLayers.Entity);
+				this.mapManager.drawLayer(this.canvas.translucentCtx, GS.MapLayers.Sector);
+				this.mapManager.drawLayer(this.canvas.translucentCtx, GS.MapLayers.Entity);
 				break;
+
 			case GS.MapLayers.Entity:
-				this.translucentCtx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-				this.mapManager.drawLayer(this.translucentCtx, GS.MapLayers.Sector);
-				this.mapManager.drawLayer(this.translucentCtx, GS.MapLayers.Segment);
+				this.mapManager.drawLayer(this.canvas.translucentCtx, GS.MapLayers.Sector);
+				this.mapManager.drawLayer(this.canvas.translucentCtx, GS.MapLayers.Segment);
 				break;
+
 			case GS.MapLayers.Sector:
-				this.translucentCtx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-				this.mapManager.drawLayer(this.translucentCtx, GS.MapLayers.Entity);
+				this.mapManager.drawLayer(this.canvas.translucentCtx, GS.MapLayers.Entity);
 				break;
+
 			case GS.MapLayers.Zone:
-				this.translucentCtx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-				this.mapManager.drawLayer(this.translucentCtx, GS.MapLayers.Sector);
-				this.mapManager.drawLayer(this.translucentCtx, GS.MapLayers.Segment);
-				this.mapManager.drawLayer(this.translucentCtx, GS.MapLayers.Entity);
+				this.mapManager.drawLayer(this.canvas.translucentCtx, GS.MapLayers.Sector);
+				this.mapManager.drawLayer(this.canvas.translucentCtx, GS.MapLayers.Segment);
+				this.mapManager.drawLayer(this.canvas.translucentCtx, GS.MapLayers.Entity);
 				break;
 		}
-	}
-
-	calculateSizes() {
-		this.minWidth = 1280;
-		this.minHeight = 720;
-
-		this.menuWidth = 300;
-		this.menuHeight = Math.max(window.innerHeight, this.minHeight);
-		this.canvasWidth = Math.max(window.innerWidth - this.menuWidth, this.minWidth - this.menuWidth);
-		this.canvasHeight = Math.max(window.innerHeight, this.minHeight);
-	}
-
-	onResize() {
-		this.calculateSizes();
-
-		this.screenCanvas.width = this.canvasWidth;
-		this.screenCanvas.height = this.canvasHeight;
-		this.bufferCanvas.width = this.canvasWidth;
-		this.bufferCanvas.height = this.canvasHeight;
-		this.translucentCanvas.width = this.canvasWidth;
-		this.translucentCanvas.height = this.canvasHeight;
-
-		this.canvasContainer.width = this.canvasWidth + "px";
-		this.canvasContainer.height = this.canvasHeight + "px";
-		this.menuContainer.style.width = this.menuWidth + "px";
-		this.menuContainer.style.height = this.menuHeight + "px";
-		this.menuContainer.style.marginLeft = this.canvasWidth + "px";
 	}
 }
 
