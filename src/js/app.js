@@ -9,6 +9,9 @@ app.directive("segmentTools", segmentTools);
 import sectorTools from "./toolbox/sector-tools/sectorTools";
 app.directive("sectorTools", sectorTools);
 
+import entityTools from "./toolbox/entity-tools/entityTools";
+app.directive("entityTools", entityTools);
+
 import zoneTools from "./toolbox/zone-tools/zoneTools";
 app.directive("zoneTools", zoneTools);
 

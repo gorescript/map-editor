@@ -196,7 +196,6 @@ export default class ToolboxController {
 	update() {
 		this.updatePositionLabel();
 
-		// TODO: remove if
 		if (this.layerTools[this.layer]) {
 			this.layerTools[this.layer].update();
 		}
@@ -305,7 +304,6 @@ export default class ToolboxController {
 	draw() {
 		this.canvas.clearBuffer();
 
-		// TODO: remove if
 		var selected;
 		if (this.layerTools[this.layer]) {
 			selected = this.layerTools[this.layer].getSelected();

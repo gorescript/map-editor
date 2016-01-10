@@ -69,42 +69,8 @@
 	</span>
 
 	<segment-tools ng-show="ctrl.layer === ctrl.MapLayers.Segment"></segment-tools>
-
-	<span ng-show="ctrl.layer === ctrl.MapLayers.Entity">
-		<div class="menu-label">Entity count</div>
-		<div class="menu-field">
-			<p id="ntt-count">0</p>
-		</div>
-		<div class="menu-two-column-field no-fixed-height">
-			<select id="ntt-type-select" name="ntt-type-select" size="10">
-			</select>
-		</div>
-		<div class="menu-two-column-field">
-			<input type="button" id="button-compute-ntt-y" value="Compute Y for selected entities">
-		</div>
-
-		<span id="ntt-tools-detail" class="detail">
-			<div class="menu-separator"></div>
-			<div class="menu-label">Entity ID</div>
-			<div class="menu-field">
-				<p id="ntt-selected-id"></p>
-			</div>
-			<div class="menu-label">Y</div>
-			<div class="menu-field">
-				<input type="text" id="ntt-selected-y">
-			</div>
-			<div class="menu-label">Rotation (deg)</div>
-			<div class="menu-field">
-				<input type="text" id="ntt-selected-rotation">
-			</div>
-			<div class="menu-label">Static</div>
-			<div class="menu-field">
-				<input type="checkbox" id="chk-ntt-selected-static">
-			</div>
-		</span>
-	</span>
-
 	<sector-tools ng-show="ctrl.layer === ctrl.MapLayers.Sector"></sector-tools>
+	<entity-tools ng-show="ctrl.layer === ctrl.MapLayers.Entity"></entity-tools>
 	<zone-tools ng-show="ctrl.layer === ctrl.MapLayers.Zone"></zone-tools>
 
 	<span id="menu-footer">

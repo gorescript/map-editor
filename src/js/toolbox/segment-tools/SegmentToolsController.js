@@ -34,6 +34,7 @@ export default class SegmentToolsController extends BaseToolsController {
 			case EditorModes.Selecting:
 				this.handleSelecting(mx, my);
 				break;
+
 			case EditorModes.Drawing:
 				this.handleDrawing(mx, my);
 				break;
