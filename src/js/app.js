@@ -3,6 +3,9 @@ var app = angular.module("map-editor", []);
 import validate from "./common/validate";
 app.directive("validate", validate);
 
+import sectorTools from "./toolbox/sector-tools/sectorTools";
+app.directive("sectorTools", sectorTools);
+
 import zoneTools from "./toolbox/zone-tools/zoneTools";
 app.directive("zoneTools", zoneTools);
 

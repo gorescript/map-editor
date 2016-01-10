@@ -72,14 +72,6 @@ export default class ToolboxController {
 		this.mapManager.init();
 
 		this.layerTools = {};
-		// this.layerTools[GS.MapLayers.Segment] = new SegmentTools(this.mapManager, this.actionLog, inCanvas);
-		// this.layerTools[GS.MapLayers.Segment].init();
-		// this.layerTools[GS.MapLayers.Sector] = new SectorTools(this.mapManager, this.actionLog, inCanvas);
-		// this.layerTools[GS.MapLayers.Sector].init();
-		// this.layerTools[GS.MapLayers.Entity] = new EntityTools(this.mapManager, this.actionLog, inCanvas);
-		// this.layerTools[GS.MapLayers.Entity].init();
-		// this.layerTools[GS.MapLayers.Zone] = new ZoneTools(this.mapManager, this.actionLog, inCanvas);
-		// this.layerTools[GS.MapLayers.Zone].init();
 	}
 
 	onLayerToolInit(layer, layerTool) {
@@ -105,7 +97,8 @@ export default class ToolboxController {
 		for (var i in this.layerTools) {
 			this.layerTools[i].mode = mode;
 		}
-		//this.layerTools[GS.MapLayers.Sector].mode = EditorModes.Selecting;
+
+		this.layerTools[GS.MapLayers.Sector].mode = EditorModes.Selecting;
 	}
 
 	onSaveMapClick() {
