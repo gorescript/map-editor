@@ -15,6 +15,8 @@ export default function validate($compile, $timeout, $window) {
 				var result = scope.validate({ value: viewValue });
 
 				if (result) {
+					ngModel.$setViewValue(result.value);
+					ngModel.$render();
 					return result.value;
 				} else {
 					ngModel.$setViewValue(ngModel.$modelValue);

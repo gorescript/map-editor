@@ -19,68 +19,88 @@
 		</div>
 	</div>
 
-	<span id="sec-tools-detail" class="detail">
+	<span ng-show="ctrl.selectedObjects.length > 0">
 		<div class="menu-separator"></div>
+
 		<div class="menu-label">Sector ID</div>
 		<div class="menu-field">
-			<p id="sec-selected-id"></p>
+			<p>{{ctrl.selectedId}}</p>
 		</div>
+
 		<div class="menu-label">Floor height</div>
 		<div class="menu-field">
-			<input type="text" id="sec-selected-floor-height">
+			<input type="text" ng-model="ctrl.sector.floorTopY" validate="ctrl.validateInteger(value)"
+				ng-change="ctrl.onFloorHeightChange()">
 		</div>
+
 		<div class="menu-label">Ceiling</div>
 		<div class="menu-field">
-			<input type="checkbox" id="chk-sec-ceil">
+			<input type="checkbox" ng-model="ctrl.sector.ceiling" ng-change="ctrl.applyToAllSelected('ceiling')">
 		</div>
+
 		<div class="menu-label">Floor-ceiling dist.</div>
 		<div class="menu-field">
-			<input type="text" id="sec-selected-floor-ceil-dist">
+			<input type="text" ng-model="ctrl.sector.floorCeilDist" validate="ctrl.validatePositiveInteger(value)"
+				ng-change="ctrl.onFloorCeilDistChange()">
 		</div>
+
 		<div class="menu-label">Ceiling thickness</div>
 		<div class="menu-field">
-			<input type="text" id="sec-selected-ceil-thickness">
+			<input type="text" ng-model="ctrl.sector.ceilThickness" validate="ctrl.validatePositiveInteger(value)"
+				ng-change="ctrl.onCeilThicknessChange()">
 		</div>
+
 		<div class="menu-label">Door</div>
 		<div class="menu-field">
-			<input type="checkbox" id="chk-sec-door">
+			<input type="checkbox" ng-model="ctrl.sector.door" ng-change="ctrl.onDoorChange()">
 		</div>
-		<div class="menu-label">Door max height</div>
-		<div class="menu-field">
-			<input type="text" id="sec-selected-door-max-height">
+
+		<div class="menu-label" ng-show="ctrl.sector.door">Door max height</div>
+		<div class="menu-field" ng-show="ctrl.sector.door">
+			<input type="text" ng-model="ctrl.sector.doorMaxHeight" validate="ctrl.validateInteger(value)"
+				ng-change="ctrl.applyToAllSelected('doorMaxHeight')">
 		</div>
+
 		<div class="menu-label">Elevator</div>
 		<div class="menu-field">
-			<input type="checkbox" id="chk-sec-elevator">
+			<input type="checkbox" ng-model="ctrl.sector.elevator" ng-change="ctrl.onElevatorChange()">
 		</div>
-		<div class="menu-label">Elevator max height</div>
-		<div class="menu-field">
-			<input type="text" id="sec-selected-elevator-max-height">
+
+		<div class="menu-label" ng-show="ctrl.sector.elevator">Elevator max height</div>
+		<div class="menu-field" ng-show="ctrl.sector.elevator">
+			<input type="text" ng-model="ctrl.sector.elevatorMaxHeight" validate="ctrl.validateInteger(value)"
+				ng-change="ctrl.applyToAllSelected('elevatorMaxHeight')">
 		</div>
-		<div class="menu-label">Use vertex colors</div>
-		<div class="menu-field">
-			<input type="checkbox" id="chk-sec-use-vertex-colors">
+
+		<div class="menu-label" ng-show="ctrl.sector.door || ctrl.sector.elevator">Use vertex colors</div>
+		<div class="menu-field" ng-show="ctrl.sector.door || ctrl.sector.elevator">
+			<input type="checkbox" ng-model="ctrl.sector.useVertexColors" ng-change="ctrl.applyToAllSelected('useVertexColors')">
 		</div>
+
 		<div class="menu-label">Floor texture</div>
 		<div class="menu-field">
-			<input type="text" id="sec-selected-floor-tex">
+			<input type="text" ng-model="ctrl.sector.floorTexId" ng-change="ctrl.applyToAllSelected('floorTexId')">
 		</div>
+
 		<div class="menu-label">Ceiling texture</div>
 		<div class="menu-field">
-			<input type="text" id="sec-selected-ceil-tex">
+			<input type="text" ng-model="ctrl.sector.ceilTexId" ng-change="ctrl.applyToAllSelected('ceilTexId')">
 		</div>
+
 		<div class="menu-label">Side texture</div>
 		<div class="menu-field">
-			<input type="text" id="sec-selected-side-tex">
+			<input type="text" ng-model="ctrl.sector.sideTexId" ng-change="ctrl.applyToAllSelected('sideTexId')">
 		</div>
+
 		<div class="menu-label">Light level</div>
 		<div class="menu-field">
-			<p id="sec-selected-light-level-text">0</p>
-			<div id="sec-selected-light-level"></div>
+			<input type="text" ng-model="ctrl.sector.lightLevel" validate="ctrl.validateLightLevel(value)"
+				ng-change="ctrl.applyToAllSelected('lightLevel')">
 		</div>
+
 		<div class="menu-label">Light color</div>
 		<div class="menu-field">
-			<input type="color" id="sec-selected-light-color">
+			<input type="color" ng-model="ctrl.sector.lightColorStyle" ng-change="ctrl.onLightColorChange()">
 		</div>
 	</span>
 </span>

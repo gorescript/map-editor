@@ -11,18 +11,6 @@ export default class SectorTools extends BaseToolsController {
 		this.SectorTriangleModes = SectorTriangleModes;
 		this.mode = EditorModes.Selecting;
 		this.layer = GS.MapLayers.Sector;
-
-		this.showSubSectors = false;
-
-		this.initMenuControls();
-	}
-
-	initMenuControls() {
-		$("#sec-selected-light-level").slider({
-			min: 0,
-			max: 10,
-			step: 1,
-		});
 	}
 
 	update() {
@@ -51,246 +39,135 @@ export default class SectorTools extends BaseToolsController {
 		return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 	}
 
-	selectionChange() {
-		var that = this;
-		var $detail = $("#sec-tools-detail");
+	validatePositiveInteger(value) {
+		if (!isNaN(value) && parseInt(value, 10) >= 0) {
+			return { value: parseInt(value, 10) };
+		} else {
+			return false;
+		}
+	}
 
-		var count = Object.keys(this.selected).length;
-		var selected = [];
-		Object.keys(this.selected).forEach(function(key) {
-			selected.push(that.mapManager.getLayerObject(GS.MapLayers.Sector, key));
-		});
+	validateInteger(value) {
+		if (!isNaN(value)) {
+			return { value: parseInt(value, 10) };
+		} else {
+			return false;
+		}
+	}
 
-		if (count > 0) {
-			var sector;
-
-			var $txtId = $("#sec-selected-id");
-			var $chkCeil = $("#chk-sec-ceil");
-			var $txtFloorHeight = $("#sec-selected-floor-height");
-			var $txtFloorCeilDist = $("#sec-selected-floor-ceil-dist");
-			var $txtCeilThickness = $("#sec-selected-ceil-thickness");
-			var $chkDoor = $("#chk-sec-door");
-			var $txtDoorMaxHeight = $("#sec-selected-door-max-height");
-			var $chkElevator = $("#chk-sec-elevator");
-			var $txtElevatorMaxHeight = $("#sec-selected-elevator-max-height");
-			var $txtFloorTexId = $("#sec-selected-floor-tex");
-			var $txtCeilTexId = $("#sec-selected-ceil-tex");
-			var $txtSideTexId = $("#sec-selected-side-tex");
-			var $txtLightLevel = $("#sec-selected-light-level-text");
-			var $sldLightLevel = $("#sec-selected-light-level");
-			var $clrLightColor = $("#sec-selected-light-color");
-			var $chkUseVertexColors = $("#chk-sec-use-vertex-colors");
-
-			$sldLightLevel.off("slidechange.detail");
-
-			if (count == 1) {
-				sector = selected[0];
-
-				var hasCeiling = (sector.ceiling !== undefined) ? sector.ceiling : true;
-				var floorHeight = sector.floorTopY;
-				var floorCeilDist = sector.ceilBottomY - floorHeight;
-				var ceilThickness = sector.ceilTopY - sector.ceilBottomY;
-				var isDoor = (sector.door !== undefined) ? sector.door : false;
-				var doorMaxHeight = (sector.doorMaxHeight !== undefined) ? sector.doorMaxHeight : 16;
-				var isElevator = (sector.elevator !== undefined) ? sector.elevator : false;
-				var elevatorMaxHeight = (sector.elevatorMaxHeight !== undefined) ? sector.elevatorMaxHeight : 16;
-				var useVertexColors = (sector.useVertexColors !== undefined) ? sector.useVertexColors : false;
-
-				$txtId.text(sector.id);
-				$txtFloorHeight.val(floorHeight);
-				$chkCeil.prop("checked", hasCeiling);
-				$txtFloorCeilDist.val(floorCeilDist);
-				$txtCeilThickness.val(ceilThickness);
-				$txtFloorCeilDist.prop("disabled", !hasCeiling);
-				$txtCeilThickness.prop("disabled", !hasCeiling);
-				$chkDoor.prop("checked", isDoor);
-				$txtDoorMaxHeight.val(doorMaxHeight);
-				$txtDoorMaxHeight.prop("disabled", !isDoor);
-				$chkElevator.prop("checked", isElevator);
-				$txtElevatorMaxHeight.val(elevatorMaxHeight);
-				$txtElevatorMaxHeight.prop("disabled", !isElevator);
-				$chkUseVertexColors.prop("checked", useVertexColors);
-				$txtFloorTexId.val(sector.floorTexId);
-				$txtCeilTexId.val(sector.ceilTexId);
-				$txtSideTexId.val(sector.sideTexId);
-				$txtLightLevel.text(sector.lightLevel);
-				$sldLightLevel.slider("option", "value", sector.lightLevel);
-				$clrLightColor.val(this.hexToStyle(sector.lightColor));
-			} else {
-				$txtId.text("multiple");
-				$txtFloorHeight.val("");
-				$chkCeil.prop("checked", true);
-				$txtFloorCeilDist.val("");
-				$txtCeilThickness.val("");
-				$txtFloorCeilDist.prop("disabled", false);
-				$txtCeilThickness.prop("disabled", false);
-				$chkDoor.prop("checked", false);
-				$txtDoorMaxHeight.prop("disabled", false);
-				$chkElevator.prop("checked", false);
-				$txtElevatorMaxHeight.prop("disabled", false);
-				$chkUseVertexColors.prop("checked", false);
-				$txtFloorTexId.val("");
-				$txtCeilTexId.val("");
-				$txtSideTexId.val("");
-				$txtLightLevel.text("5");
-				$sldLightLevel.slider("option", "value", 5);
-				$clrLightColor.val("#ad00ad");
+	validateLightLevel(value) {
+		if (!isNaN(value) && parseInt(value, 10) === parseFloat(value)) {
+			let n = parseInt(value, 10);
+			if (n < 0) {
+				n = 0;
+			}
+			if (n > 10) {
+				n = 10;
 			}
 
-			$txtFloorHeight.off("change.detail");
-			$txtFloorHeight.on("change.detail", function() {
-				var n = parseInt($(this).val());
-				n = isNaN(n) ? 0 : n;
-				for (var i = 0; i < selected.length; i++) {
-					var floorCeilDist = selected[i].ceilBottomY - selected[i].floorTopY;
-					var ceilThickness = selected[i].ceilTopY - selected[i].ceilBottomY;
-					selected[i].floorTopY = n;
-					selected[i].floorBottomY = n;
-					selected[i].ceilBottomY = n + floorCeilDist;
-					selected[i].ceilTopY = n + floorCeilDist + ceilThickness;
-				}
-			});
-
-			$chkCeil.off("change.detail");
-			$chkCeil.on("change.detail", function() {
-				for (var i = 0; i < selected.length; i++) {
-					selected[i].ceiling = $(this).is(":checked");
-					$txtFloorCeilDist.prop("disabled", !selected[i].ceiling);
-					$txtCeilThickness.prop("disabled", !selected[i].ceiling);
-				}
-			});
-
-			$txtFloorCeilDist.off("change.detail");
-			$txtFloorCeilDist.on("change.detail", function() {
-				var n = parseInt($(this).val());
-				n = isNaN(n) ? 0 : n;
-				if (n > 0) {
-					for (var i = 0; i < selected.length; i++) {
-						var ceilThickness = selected[i].ceilTopY - selected[i].ceilBottomY;
-						selected[i].ceilBottomY = selected[i].floorBottomY + n;
-						selected[i].ceilTopY = selected[i].ceilBottomY + ceilThickness;
-					}
-				}
-			});
-
-			$txtCeilThickness.off("change.detail");
-			$txtCeilThickness.on("change.detail", function() {
-				var n = parseInt($(this).val());
-				n = isNaN(n) ? 0 : n;
-				for (var i = 0; i < selected.length; i++) {
-					selected[i].ceilTopY = selected[i].ceilBottomY + n;
-				}
-			});
-
-			$chkDoor.off("change.detail");
-			$chkDoor.on("change.detail", function() {
-				var value = $(this).is(":checked");
-				for (var i = 0; i < selected.length; i++) {
-					selected[i].door = value;
-					if (value) {
-						selected[i].elevator = false;
-					}
-				}
-				if (value) {
-					$chkElevator.prop("checked", false);
-					$txtElevatorMaxHeight.prop("disabled", true);
-				}
-				$txtDoorMaxHeight.prop("disabled", !value);
-			});
-
-			$txtDoorMaxHeight.off("change.detail");
-			$txtDoorMaxHeight.on("change.detail", function() {
-				var n = parseInt($(this).val());
-				n = isNaN(n) ? 0 : n;
-				if (n >= 0) {
-					for (var i = 0; i < selected.length; i++) {
-						selected[i].doorMaxHeight = n;
-					}
-				}
-			});
-
-			$chkElevator.off("change.detail");
-			$chkElevator.on("change.detail", function() {
-				var value = $(this).is(":checked");
-				for (var i = 0; i < selected.length; i++) {
-					selected[i].elevator = value;
-					if (value) {
-						selected[i].door = false;
-					}
-				}
-				if (value) {
-					$chkDoor.prop("checked", false);
-					$txtDoorMaxHeight.prop("disabled", true);
-				}
-				$txtElevatorMaxHeight.prop("disabled", !value);
-			});
-
-			$chkUseVertexColors.off("change.detail");
-			$chkUseVertexColors.on("change.detail", function() {
-				var value = $(this).is(":checked");
-				for (var i = 0; i < selected.length; i++) {
-					selected[i].useVertexColors = value;
-				}
-			});
-
-			$txtElevatorMaxHeight.off("change.detail");
-			$txtElevatorMaxHeight.on("change.detail", function() {
-				var n = parseInt($(this).val());
-				n = isNaN(n) ? 0 : n;
-				if (n >= 0) {
-					for (var i = 0; i < selected.length; i++) {
-						selected[i].elevatorMaxHeight = n;
-					}
-				}
-			});
-
-			$txtFloorTexId.off("change.detail");
-			$txtFloorTexId.on("change.detail", function() {
-				var value = $(this).val();
-				for (var i = 0; i < selected.length; i++) {
-					selected[i].floorTexId = value;
-				}
-			});
-
-			$txtCeilTexId.off("change.detail");
-			$txtCeilTexId.on("change.detail", function() {
-				var value = $(this).val();
-				for (var i = 0; i < selected.length; i++) {
-					selected[i].ceilTexId = value;
-				}
-			});
-
-			$txtSideTexId.off("change.detail");
-			$txtSideTexId.on("change.detail", function() {
-				var value = $(this).val();
-				for (var i = 0; i < selected.length; i++) {
-					selected[i].sideTexId = value;
-				}
-			});
-
-			$sldLightLevel.off("slide.detail");
-			$sldLightLevel.on("slide.detail", function(e, ui) {
-				$txtLightLevel.text(ui.value);
-			});
-
-			$sldLightLevel.on("slidechange.detail", function(e, ui) {
-				for (var i = 0; i < selected.length; i++) {
-					selected[i].lightLevel = ui.value;
-				}
-			});
-
-			$clrLightColor.off("change.detail");
-			$clrLightColor.on("change.detail", function(e, ui) {
-				var value = that.styleToHex($(this).val());
-				for (var i = 0; i < selected.length; i++) {
-					selected[i].lightColor = value;
-					selected[i].ceilingCatColor = value;
-				}
-			});
-
-			$detail.show();
+			return { value: n };
 		} else {
-			$detail.hide();
+			return false;
+		}
+	}
+
+	onFloorHeightChange() {
+		this.selectedObjects.forEach((obj) => {
+			var floorCeilDist = obj.ceilBottomY - obj.floorTopY;
+			var ceilThickness = obj.ceilTopY - obj.ceilBottomY;
+
+			obj.floorTopY = this.sector.floorTopY;
+			obj.floorBottomY = this.sector.floorTopY;
+			obj.ceilBottomY = this.sector.floorTopY + floorCeilDist;
+			obj.ceilTopY = this.sector.floorTopY + floorCeilDist + ceilThickness;
+		});
+	}
+
+	onFloorCeilDistChange() {
+		this.selectedObjects.forEach((obj) => {
+			var ceilThickness = obj.ceilTopY - obj.ceilBottomY;
+
+			obj.ceilBottomY = obj.floorBottomY + this.sector.floorCeilDist;
+			obj.ceilTopY = obj.ceilBottomY + ceilThickness;
+		});
+	}
+
+	onCeilThicknessChange() {
+		this.selectedObjects.forEach((obj) => {
+			obj.ceilTopY = obj.ceilBottomY + this.sector.ceilThickness;
+		});
+	}
+
+	onDoorChange() {
+		this.selectedObjects.forEach((obj) => {
+			obj.door = this.sector.door;
+
+			if (this.sector.door) {
+				this.sector.elevator = false;
+				obj.elevator = false;
+			}
+		});
+	}
+
+	onElevatorChange() {
+		this.selectedObjects.forEach((obj) => {
+			obj.elevator = this.sector.elevator;
+
+			if (this.sector.elevator) {
+				this.sector.door = false;
+				obj.door = false;
+			}
+		});
+	}
+
+	onLightColorChange() {
+		this.selectedObjects.forEach((obj) => {
+			let value = this.styleToHex(this.sector.lightColorStyle);
+
+			obj.lightColor = value;
+			obj.ceilingCatColor = value;
+		});
+	}
+
+	applyToAllSelected(propertyName) {
+		this.selectedObjects.forEach((obj) => {
+			obj[propertyName] = this.sector[propertyName];
+		});
+	}
+
+	selectionChange() {
+		super.selectionChange();
+
+		this.selectedObjects = Object.keys(this.selected).map((key) => this.mapManager.getLayerObject(this.layer, key));
+
+		if (this.selectedObjects.length > 0) {
+			if (this.selectedObjects.length === 1) {
+				let sector = angular.copy(this.selectedObjects[0]);
+
+				this.selectedId = sector.id;
+
+				sector.ceiling = (sector.ceiling !== undefined) ? sector.ceiling : true;
+
+				sector.floorCeilDist = sector.ceilBottomY - sector.floorTopY;
+				sector.ceilThickness = sector.ceilTopY - sector.ceilBottomY;
+
+				sector.door = (sector.door !== undefined) ? sector.door : false;
+				sector.doorMaxHeight = (sector.doorMaxHeight !== undefined) ? sector.doorMaxHeight : 16;
+
+				sector.elevator = (sector.elevator !== undefined) ? sector.elevator : false;
+				sector.elevatorMaxHeight = (sector.elevatorMaxHeight !== undefined) ? sector.elevatorMaxHeight : 16;
+
+				sector.useVertexColors = (sector.useVertexColors !== undefined) ? sector.useVertexColors : false;
+				sector.lightColorStyle = this.hexToStyle(sector.lightColor);
+
+				this.sector = sector;
+			} else {
+				this.selectedId = `${this.selectedObjects.length} selected`;
+
+				this.sector = {
+					lightColorStyle: "#ad00ad"
+				};
+			}
 		}
 	}
 }
