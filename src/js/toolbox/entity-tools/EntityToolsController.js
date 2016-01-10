@@ -48,7 +48,13 @@ export default class EntityToolsController extends BaseToolsController {
 				var containsEntity = this.mapManager.isEntityAt(v);
 
 				if (!containsEntity) {
-					let ntt = this.mapManager.constructLayerObject(this.layer, { pos: v, type: this.selectedEntityType.id, rotation: 0 });
+					let ntt = this.mapManager.constructLayerObject(this.layer, {
+						pos: v,
+						y: 0,
+						type: this.selectedEntityType.id,
+						rotation: 0
+					});
+
 					this.mapManager.addLayerObject(this.layer, ntt);
 					this.actionLog.push(this.getAddAction(ntt.id));
 				}
