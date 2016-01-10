@@ -1,6 +1,6 @@
 import EditorModes from "../../common/enums/EditorModes";
 import BaseToolsController from "../BaseToolsController";
-import SectorTriangleModes from "../../core/SectorTriangleModes";
+import SectorTriangleModes from "../../common/enums/SectorTriangleModes";
 
 export default class SectorTools extends BaseToolsController {
 	constructor() {

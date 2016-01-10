@@ -1,5 +1,5 @@
 import EdgeTool from "./EdgeTool";
-import SectorTriangleModes from "./SectorTriangleModes";
+import SectorTriangleModes from "../common/enums/SectorTriangleModes";
 
 function MapManager(canvas, ctx) {
 	this.canvas = canvas;
