@@ -7,10 +7,10 @@ export default class SectorTools extends BaseToolsController {
 		super();
 
 		this.id = "sectorTools";
+		this.layer = GS.MapLayers.Sector;
 
 		this.SectorTriangleModes = SectorTriangleModes;
 		this.mode = EditorModes.Selecting;
-		this.layer = GS.MapLayers.Sector;
 	}
 
 	update() {

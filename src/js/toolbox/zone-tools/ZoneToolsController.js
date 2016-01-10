@@ -6,8 +6,8 @@ export default class ZoneToolsController extends BaseToolsController {
 		super();
 
 		this.id = "zoneTools";
-
 		this.layer = GS.MapLayers.Zone;
+
 		this.isDrawingZone = false;
 	}
 
