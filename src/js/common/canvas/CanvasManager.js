@@ -43,13 +43,11 @@ export default class CanvasManager {
 	}
 
 	calculateSizes() {
-		this.minWidth = 1280;
-		this.minHeight = 720;
+		var menuWidth = 300;
+		this.menuHeight = window.innerHeight;
 
-		this.menuWidth = 300;
-		this.menuHeight = Math.max(window.innerHeight, this.minHeight);
-		this.canvasWidth = Math.max(window.innerWidth - this.menuWidth, this.minWidth - this.menuWidth);
-		this.canvasHeight = Math.max(window.innerHeight, this.minHeight);
+		this.canvasWidth = window.innerWidth - menuWidth;
+		this.canvasHeight = window.innerHeight;
 	}
 
 	onResize() {
@@ -64,7 +62,6 @@ export default class CanvasManager {
 
 		this.canvasContainer.width = this.canvasWidth + "px";
 		this.canvasContainer.height = this.canvasHeight + "px";
-		this.menuContainer.style.width = this.menuWidth + "px";
 		this.menuContainer.style.height = this.menuHeight + "px";
 		this.menuContainer.style.marginLeft = this.canvasWidth + "px";
 	}

@@ -38,9 +38,6 @@ export default class ToolboxController {
 		this.initMenuControls();
 		this.initModifyOriginEvent();
 
-		$(this.canvas.canvasContainer).show();
-		$(this.canvas.menuContainer).css("display", "block");
-
 		this.importTestMap();
 		this.draw();
 	}
