@@ -8,7 +8,7 @@ var gutil = require("gulp-util");
 
 gulp.task("less", function () {
 	return gulp.src([
-			"./src/less/vendor/**/*.less",
+			"./vendor/less/**/*.less",
 			"./src/**/*.less"
 		])
 		.pipe(plumber(function (error) {

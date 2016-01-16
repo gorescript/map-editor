@@ -1,4 +1,4 @@
-<span class="segment-tools">
+<div class="segment-tools">
 	<div class="menu-label">Segment count</div>
 	<div class="menu-field">
 		<p>{{ctrl.count}}</p>
@@ -14,80 +14,48 @@
 		<input type="checkbox" ng-model="ctrl.mapManager.showSegmentNormals">
 	</div>
 
-	<div class="menu-separator"></div>
-
-	<div class="menu-label wide-label">User-drawn segments</div>
-	<div class="menu-field">
-		<input type="checkbox" ng-model="ctrl.mapManager.showUserDrawnSegments">
-	</div>
-
-	<div class="menu-label wide-label">Generated interior floor sides</div>
-	<div class="menu-field">
-		<input type="checkbox" ng-model="ctrl.mapManager.showGeneratedInteriorFloorSides">
-	</div>
-
-	<div class="menu-label wide-label">Generated interior ceiling sides</div>
-	<div class="menu-field">
-		<input type="checkbox" ng-model="ctrl.mapManager.showGeneratedInteriorCeilingSides">
-	</div>
-
-	<div class="menu-label wide-label">Generated exterior sides</div>
-	<div class="menu-field">
-		<input type="checkbox" ng-model="ctrl.mapManager.showGeneratedExteriorSides">
-	</div>
-
-	<div class="menu-label wide-label">TV screens and switches</div>
-	<div class="menu-field">
-		<input type="checkbox" ng-model="ctrl.mapManager.showTVScreens">
-	</div>
-
-	<div class="menu-separator"></div>
-
-	<div class="menu-two-column-field">
-		<input type="button" value="Convert selected segments to sectors" ng-click="ctrl.onConvertToSectorsClick()">
-	</div>
-
-	<div class="menu-two-column-field">
-		<input type="button" value="Flip normals for selected segments" ng-click="ctrl.onFlipNormalsClick()">
-	</div>
-
-	<div class="menu-two-column-field">
-		<input type="button" value="Regenerate sides" ng-click="ctrl.onRegenerateSidesClick()">
-	</div>
-
-	<span ng-show="ctrl.selectedObjects.length > 0">
-		<div class="menu-separator"></div>
-
-		<div class="menu-label">Segment ID</div>
-		<div class="menu-field">
-			<p>{{ctrl.selectedId}}</p>
+	<div class="panel panel-default" ng-show="ctrl.selectedObjects.length > 0">
+		<div class="panel-heading">
+			Selection
 		</div>
+		<div class="panel-body">
+			<div class="menu-label">Segment ID</div>
+			<div class="menu-field">
+				<p>{{ctrl.selectedId}}</p>
+			</div>
 
-		<div class="menu-label">Bottom Y</div>
-		<div class="menu-field">
-			<input type="text" ng-model="ctrl.segment.bottomY" validate="ctrl.validateInteger(value)"
-				ng-change="ctrl.applyToAllSelected('bottomY')">
-		</div>
+			<div class="menu-label">Bottom Y</div>
+			<div class="menu-field">
+				<input type="text" ng-model="ctrl.segment.bottomY" validate="ctrl.validateInteger(value)"
+					ng-change="ctrl.applyToAllSelected('bottomY')">
+			</div>
 
-		<div class="menu-label">Top Y</div>
-		<div class="menu-field">
-			<input type="text" ng-model="ctrl.segment.topY" validate="ctrl.validateInteger(value)"
-				ng-change="ctrl.applyToAllSelected('topY')">
-		</div>
+			<div class="menu-label">Top Y</div>
+			<div class="menu-field">
+				<input type="text" ng-model="ctrl.segment.topY" validate="ctrl.validateInteger(value)"
+					ng-change="ctrl.applyToAllSelected('topY')">
+			</div>
 
-		<div class="menu-label">TV screen</div>
-		<div class="menu-field">
-			<input type="checkbox" ng-model="ctrl.segment.tvScreen" ng-change="ctrl.onTVScreenChange()">
-		</div>
+			<div class="menu-label">TV screen</div>
+			<div class="menu-field">
+				<input type="checkbox" ng-model="ctrl.segment.tvScreen" ng-change="ctrl.onTVScreenChange()">
+			</div>
 
-		<div class="menu-label">Switch</div>
-		<div class="menu-field">
-			<input type="checkbox" ng-model="ctrl.segment.switch" ng-change="ctrl.onSwitchChange()">
-		</div>
+			<div class="menu-label">Switch</div>
+			<div class="menu-field">
+				<input type="checkbox" ng-model="ctrl.segment.switch" ng-change="ctrl.onSwitchChange()">
+			</div>
 
-		<div class="menu-label">Texture</div>
-		<div class="menu-field">
-			<input type="text" ng-model="ctrl.segment.texId" ng-change="ctrl.applyToAllSelected('texId')">
+			<div class="menu-label">Texture</div>
+			<div class="menu-field">
+				<input type="text" ng-model="ctrl.segment.texId" ng-change="ctrl.applyToAllSelected('texId')">
+			</div>
 		</div>
-	</span>
-</span>
+	</div>
+
+	<div class="buttons">
+		<button type="button" class="btn btn-primary" ng-click="ctrl.onConvertToSectorsClick()">Convert selected segments to sectors</button>
+		<button type="button" class="btn btn-primary" ng-click="ctrl.onFlipNormalsClick()">Flip normals for selected segments</button>
+		<button type="button" class="btn btn-primary" ng-click="ctrl.onRegenerateSidesClick()">Regenerate sides</button>
+	</div>
+</div>

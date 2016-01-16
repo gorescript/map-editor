@@ -1,4 +1,13 @@
 <div class="toolbox">
+	<div class="buttons">
+		<input type="file" id="field-import" class="hide">
+
+		<button type="button" class="btn btn-primary" ng-click="ctrl.clearMap()">New</button>
+		<button type="button" class="btn btn-primary" ng-click="ctrl.onSaveMapClick()">Save</button>
+		<button type="button" class="btn btn-primary" ng-click="ctrl.importMap()">Import</button>
+		<button type="button" class="btn btn-primary" ng-click="ctrl.mapManager.downloadMap()">Download</button>
+	</div>
+
 	<div class="menu-label">Map name</div>
 	<div class="menu-field">
 		<input type="text" ng-model="ctrl.mapManager.map.name" validate="ctrl.validateMapName(value)">
@@ -34,8 +43,6 @@
 			class="pos-textbox">
 	</div>
 
-	<div class="menu-separator"></div>
-
 	<div class="menu-two-column-field">
 		<div id="radio-layer" class="centered">
 			<input type="radio" id="radio-layer-seg" name="radio-layer" ng-model="ctrl.layer"
@@ -52,8 +59,6 @@
 			<label for="radio-layer-zone">Zones</label>
 		</div>
 	</div>
-
-	<div class="menu-separator"></div>
 
 	<span ng-hide="ctrl.layer === ctrl.MapLayers.Sector">
 		<div class="menu-label">Editor mode</div>
@@ -73,23 +78,4 @@
 	<sector-tools ng-show="ctrl.layer === ctrl.MapLayers.Sector"></sector-tools>
 	<entity-tools ng-show="ctrl.layer === ctrl.MapLayers.Entity"></entity-tools>
 	<zone-tools ng-show="ctrl.layer === ctrl.MapLayers.Zone"></zone-tools>
-
-	<span id="menu-footer">
-		<div class="menu-separator"></div>
-
-		<input type="file" id="field-import" class="hide">
-
-		<div class="menu-two-column-field">
-			<input type="button" value="Import map" ng-click="ctrl.importMap()">
-		</div>
-		<div class="menu-two-column-field">
-			<input type="button" value="Download map" ng-click="ctrl.mapManager.downloadMap()">
-		</div>
-		<div class="menu-two-column-field">
-			<input type="button" value="Save map" ng-click="ctrl.onSaveMapClick()">
-		</div>
-		<div class="menu-two-column-field">
-			<input type="button" value="Clear map" ng-click="ctrl.clearMap()">
-		</div>
-	</span>
 </div>

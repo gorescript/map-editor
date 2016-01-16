@@ -1,4 +1,4 @@
-<span class="entity-tools">
+<div class="entity-tools">
 	<div class="menu-label">Entity count</div>
 	<div class="menu-field">
 		<p>{{ctrl.count}}</p>
@@ -10,13 +10,7 @@
 		</select>
 	</div>
 
-	<div class="menu-two-column-field">
-		<input type="button" value="Compute Y for selected entities" ng-click="ctrl.onComputeYClick()">
-	</div>
-
-	<span ng-show="ctrl.selectedObjects.length > 0">
-		<div class="menu-separator"></div>
-
+	<div ng-show="ctrl.selectedObjects.length > 0">
 		<div class="menu-label">Entity ID</div>
 		<div class="menu-field">
 			<p>{{ctrl.selectedId}}</p>
@@ -39,5 +33,9 @@
 			<input type="checkbox" ng-model="ctrl.entity.isStatic"
 				ng-change="ctrl.applyToAllSelected('isStatic')">
 		</div>
-	</span>
-</span>
+	</div>
+
+	<div class="buttons">
+		<button type="button" class="btn btn-primary" ng-click="ctrl.onComputeYClick()">Compute Y for selected entities</button>
+	</div>
+</div>

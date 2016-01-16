@@ -1,4 +1,4 @@
-<span class="sector-tools">
+<div class="sector-tools">
 	<div class="menu-label">Sector count</div>
 	<div class="menu-field">
 		<p>{{ctrl.count}}</p>
@@ -20,8 +20,6 @@
 	</div>
 
 	<span ng-show="ctrl.selectedObjects.length > 0">
-		<div class="menu-separator"></div>
-
 		<div class="menu-label">Sector ID</div>
 		<div class="menu-field">
 			<p>{{ctrl.selectedId}}</p>
@@ -102,5 +100,5 @@
 		<div class="menu-field">
 			<input type="color" ng-model="ctrl.sector.lightColorStyle" ng-change="ctrl.onLightColorChange()">
 		</div>
-	</span>
+	</div>
 </span>

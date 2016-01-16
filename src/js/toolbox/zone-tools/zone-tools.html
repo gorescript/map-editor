@@ -1,12 +1,10 @@
-<span class="zone-tools">
+<div class="zone-tools">
 	<div class="menu-label">Zone count</div>
 	<div class="menu-field">
 		<p>{{ctrl.count}}</p>
 	</div>
 
-	<span ng-show="ctrl.selectedObjects.length > 0">
-		<div class="menu-separator"></div>
-
+	<div ng-show="ctrl.selectedObjects.length > 0">
 		<div class="menu-label">Zone ID</div>
 		<div class="menu-field">
 			<p>{{ctrl.selectedId}}</p>
@@ -17,5 +15,5 @@
 			<input type="text" ng-model="ctrl.selectedName" validate="ctrl.validateZoneName(value)"
 				ng-change="ctrl.onNameChange()">
 		</div>
-	</span>
-</span>
+	</div>
+</div>
