@@ -77,18 +77,18 @@
 			<input type="checkbox" ng-model="ctrl.sector.useVertexColors" ng-change="ctrl.applyToAllSelected('useVertexColors')">
 		</div>
 
-		<div class="menu-label">Floor texture</div>
-		<div class="menu-field">
+		<div class="menu-label" ng-show="ctrl.sector.elevator && !ctrl.sector.useVertexColors">Floor texture</div>
+		<div class="menu-field" ng-show="ctrl.sector.elevator && !ctrl.sector.useVertexColors">
 			<input type="text" ng-model="ctrl.sector.floorTexId" ng-change="ctrl.applyToAllSelected('floorTexId')">
 		</div>
 
-		<div class="menu-label">Ceiling texture</div>
-		<div class="menu-field">
+		<div class="menu-label" ng-show="ctrl.sector.door && !ctrl.sector.useVertexColors">Ceiling texture</div>
+		<div class="menu-field" ng-show="ctrl.sector.door && !ctrl.sector.useVertexColors">
 			<input type="text" ng-model="ctrl.sector.ceilTexId" ng-change="ctrl.applyToAllSelected('ceilTexId')">
 		</div>
 
-		<div class="menu-label">Side texture</div>
-		<div class="menu-field">
+		<div class="menu-label" ng-show="(ctrl.sector.door || ctrl.sector.elevator) && !ctrl.sector.useVertexColors">Side texture</div>
+		<div class="menu-field" ng-show="(ctrl.sector.door || ctrl.sector.elevator) && !ctrl.sector.useVertexColors">
 			<input type="text" ng-model="ctrl.sector.sideTexId" ng-change="ctrl.applyToAllSelected('sideTexId')">
 		</div>
 
