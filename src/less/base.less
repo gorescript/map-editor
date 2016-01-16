@@ -1,16 +1,25 @@
 * {
 	box-sizing: border-box;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 body {
 	margin: 0;
 	padding: 0;
-	background-color: #fff;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
 }
 
 canvas {
 	position: fixed;
 	cursor: default;
+}
+
+.hide {
+	display: none;
 }
 
 #canvas-container {
@@ -19,8 +28,6 @@ canvas {
 #menu-container {
 	background-color: #DFDFDF;
 	border-left: 1px solid #AAAAAB;
-	font-family: Arial, Helvetica;
-	font-size: 12px;
 	padding: 5px;
 	width: 300px;
 	overflow: auto;
@@ -84,24 +91,12 @@ canvas {
 	}
 }
 
-.menu-double-row {
-	height: 60px;
-}
-
-.no-stretch-width {
-	width: auto !important;
-}
-
 .no-fixed-height {
 	height: auto;
 }
 
 .centered {
 	text-align: center;
-}
-
-.detail {
-	display: none;
 }
 
 .pos-textbox {
@@ -114,48 +109,4 @@ canvas {
 
 #radio-editor-mode {
 	font-size: 12px;
-}
-
-#radio-layer-ntt + label {
-	margin-top: 5px;
-}
-
-#radio-layer-zone + label {
-	margin-top: 5px;
-}
-
-#texture-popup {
-	position: relative;
-	background: #FFF;
-	padding: 20px;
-	width: auto;
-	max-width: 1024px;
-	margin: 20px auto;
-}
-
-.map-texture-img {
-	width: 128px;
-	height: 128px;
-}
-
-.map-texture-label > input[type=radio] {
-	display: none;
-}
-.map-texture-radio + img {
-	cursor: pointer;
-	border: 2px solid transparent;
-}
-.map-texture-radio:checked + img {
-	border: 2px solid #000;
-}
-
-#sec-selected-light-level {
-	width: 100px;
-	margin-top: 8px;
-	margin-right: 25px;
-	float: right;
-}
-
-#sec-selected-light-level a {
-	outline: none;
 }

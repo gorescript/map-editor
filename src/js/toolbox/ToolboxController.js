@@ -291,6 +291,7 @@ export default class ToolboxController {
 				case ActionTypes.Add:
 					this.layerTools[action.layer].undoAdd(action);
 					break;
+
 				case ActionTypes.Remove:
 					this.layerTools[action.layer].undoRemove(action);
 					break;

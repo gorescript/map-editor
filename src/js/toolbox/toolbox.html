@@ -30,7 +30,8 @@
 
 	<div class="menu-label" ng-hide="!ctrl.mapManager.snapToGrid">Grid cell size</div>
 	<div class="menu-field" ng-hide="!ctrl.mapManager.snapToGrid">
-		<input type="text" ng-model="ctrl.mapManager.map.cellSize" validate="ctrl.validatePositiveInteger(value)">
+		<input type="text" ng-model="ctrl.mapManager.map.cellSize" validate="ctrl.validatePositiveInteger(value)"
+			class="pos-textbox">
 	</div>
 
 	<div class="menu-separator"></div>
@@ -76,9 +77,8 @@
 	<span id="menu-footer">
 		<div class="menu-separator"></div>
 
-		<div class="menu-two-column-field">
-			<input type="file" id="field-import">
-		</div>
+		<input type="file" id="field-import" class="hide">
+
 		<div class="menu-two-column-field">
 			<input type="button" value="Import map" ng-click="ctrl.importMap()">
 		</div>
