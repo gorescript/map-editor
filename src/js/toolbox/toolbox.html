@@ -102,11 +102,12 @@
 			Layer
 		</div>
 		<div class="btn-group layer-buttons">
-			<label class="btn btn-primary" ng-model="ctrl.layer" uib-btn-radio="ctrl.MapLayers.Segment">Segment</label>
-			<label class="btn btn-primary" ng-model="ctrl.layer" uib-btn-radio="ctrl.MapLayers.Sector">Sector</label>
-			<label class="btn btn-primary" ng-model="ctrl.layer" uib-btn-radio="ctrl.MapLayers.Entity">Entity</label>
-			<label class="btn btn-primary" ng-model="ctrl.layer" uib-btn-radio="ctrl.MapLayers.Zone">Zone</label>
-		</div><div class="panel-body">
+			<label class="btn btn-primary" style="width: 30%" ng-model="ctrl.layer" uib-btn-radio="ctrl.MapLayers.Segment">Segment</label>
+			<label class="btn btn-primary" style="width: 24%" ng-model="ctrl.layer" uib-btn-radio="ctrl.MapLayers.Sector">Sector</label>
+			<label class="btn btn-primary" style="width: 24%" ng-model="ctrl.layer" uib-btn-radio="ctrl.MapLayers.Entity">Entity</label>
+			<label class="btn btn-primary" style="width: 22%" ng-model="ctrl.layer" uib-btn-radio="ctrl.MapLayers.Zone">Zone</label>
+		</div>
+		<div class="panel-body">
 			<segment-tools ng-show="ctrl.layer === ctrl.MapLayers.Segment"></segment-tools>
 			<sector-tools ng-show="ctrl.layer === ctrl.MapLayers.Sector"></sector-tools>
 			<entity-tools ng-show="ctrl.layer === ctrl.MapLayers.Entity"></entity-tools>
