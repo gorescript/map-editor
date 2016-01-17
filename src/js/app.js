@@ -4,6 +4,9 @@ var app = angular.module("map-editor", [
 	"ui.bootstrap"
 ]);
 
+import convertToNumber from "./common/convertToNumber";
+app.directive("convertToNumber", convertToNumber);
+
 import multiSelect from "./common/multi-select/multiSelect";
 app.directive("multiSelect", multiSelect);
 

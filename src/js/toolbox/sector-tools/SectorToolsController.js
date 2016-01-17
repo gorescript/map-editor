@@ -1,6 +1,7 @@
 import EditorModes from "../../common/enums/EditorModes";
 import BaseToolsController from "../BaseToolsController";
 import SectorTriangleModes from "../../common/enums/SectorTriangleModes";
+import AppConfig from "../../common/AppConfig";
 
 export default class SectorTools extends BaseToolsController {
 	constructor() {
@@ -8,6 +9,8 @@ export default class SectorTools extends BaseToolsController {
 
 		this.id = "sectorTools";
 		this.layer = GS.MapLayers.Sector;
+
+		this.AppConfig = AppConfig;
 
 		this.SectorTriangleModes = SectorTriangleModes;
 		this.mode = EditorModes.Selecting;

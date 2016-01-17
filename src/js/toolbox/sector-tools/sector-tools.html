@@ -1,104 +1,132 @@
 <div class="sector-tools">
-	<div class="menu-label">Sector count</div>
-	<div class="menu-field">
-		<p>{{ctrl.count}}</p>
+	<div class="form-group">
+		<label>Count</label>
+		<span>
+			{{ctrl.count}}
+		</span>
 	</div>
 
-	<div class="menu-label">Triangles</div>
-	<div class="menu-field">
-		<div id="radio-sec-tri-mode">
-			<input type="radio" id="radio-sec-tri-mode-none" name="radio-sec-tri-mode"
-				ng-model="ctrl.mapManager.sectorTriangleMode" ng-value="ctrl.SectorTriangleModes.None">
-			<label for="radio-sec-tri-mode-none">None</label>
-			<input type="radio" id="radio-sec-tri-mode-rendering" name="radio-sec-tri-mode-rendering"
-				ng-model="ctrl.mapManager.sectorTriangleMode" ng-value="ctrl.SectorTriangleModes.Rendering">
-			<label for="radio-sec-tri-mode-rendering" title="Rendering">Rnd</label>
-			<input type="radio" id="radio-sec-tri-mode-collision" name="radio-sec-tri-mode-collision"
-				ng-model="ctrl.mapManager.sectorTriangleMode" ng-value="ctrl.SectorTriangleModes.Collision">
-			<label for="radio-sec-tri-mode-collision" title="Collision">Col</label>
-		</div>
+	<div class="form-group" ng-show="ctrl.AppConfig.advancedOptions">
+		<label>Visible triangles</label>
+		<span>
+			<select ng-model="ctrl.mapManager.sectorTriangleMode" convert-to-number>
+				<option value="{{ctrl.SectorTriangleModes.None}}">None</option>
+				<option value="{{ctrl.SectorTriangleModes.Rendering}}">Rendering</option>
+				<option value="{{ctrl.SectorTriangleModes.Collision}}">Collision</option>
+			</select>
+		</span>
 	</div>
 
-	<span ng-show="ctrl.selectedObjects.length > 0">
-		<div class="menu-label">Sector ID</div>
-		<div class="menu-field">
-			<p>{{ctrl.selectedId}}</p>
+	<div ng-show="ctrl.selectedObjects.length > 0">
+		<div class="form-group">
+			<label>ID</label>
+			<span>
+				{{ctrl.selectedId}}
+			</span>
 		</div>
 
-		<div class="menu-label">Floor height</div>
-		<div class="menu-field">
-			<input type="text" ng-model="ctrl.sector.floorTopY" validate="ctrl.validateInteger(value)"
-				ng-change="ctrl.onFloorHeightChange()">
+		<div class="form-group">
+			<label>Floor height</label>
+			<span>
+				<input type="text" ng-model="ctrl.sector.floorTopY" validate="ctrl.validateInteger(value)"
+					ng-change="ctrl.onFloorHeightChange()">
+			</span>
 		</div>
 
-		<div class="menu-label">Ceiling</div>
-		<div class="menu-field">
-			<input type="checkbox" ng-model="ctrl.sector.ceiling" ng-change="ctrl.applyToAllSelected('ceiling')">
+		<div class="form-group">
+			<label>Ceiling</label>
+			<span>
+				<input type="checkbox" ng-model="ctrl.sector.ceiling" ng-change="ctrl.applyToAllSelected('ceiling')">
+			</span>
 		</div>
 
-		<div class="menu-label">Floor-ceiling dist.</div>
-		<div class="menu-field">
-			<input type="text" ng-model="ctrl.sector.floorCeilDist" validate="ctrl.validatePositiveInteger(value)"
-				ng-change="ctrl.onFloorCeilDistChange()">
+		<div class="form-group">
+			<label>Floor-ceiling dist.</label>
+			<span>
+				<input type="text" ng-model="ctrl.sector.floorCeilDist" validate="ctrl.validatePositiveInteger(value)"
+					ng-change="ctrl.onFloorCeilDistChange()">
+			</span>
 		</div>
 
-		<div class="menu-label">Ceiling thickness</div>
-		<div class="menu-field">
-			<input type="text" ng-model="ctrl.sector.ceilThickness" validate="ctrl.validatePositiveInteger(value)"
-				ng-change="ctrl.onCeilThicknessChange()">
+		<div class="form-group">
+			<label>Ceiling thickness</label>
+			<span>
+				<input type="text" ng-model="ctrl.sector.ceilThickness" validate="ctrl.validatePositiveInteger(value)"
+					ng-change="ctrl.onCeilThicknessChange()">
+			</span>
 		</div>
 
-		<div class="menu-label">Door</div>
-		<div class="menu-field">
-			<input type="checkbox" ng-model="ctrl.sector.door" ng-change="ctrl.onDoorChange()">
+		<div class="form-group">
+			<label>Door</label>
+			<span>
+				<input type="checkbox" ng-model="ctrl.sector.door" ng-change="ctrl.onDoorChange()">
+			</span>
 		</div>
 
-		<div class="menu-label" ng-show="ctrl.sector.door">Door max height</div>
-		<div class="menu-field" ng-show="ctrl.sector.door">
-			<input type="text" ng-model="ctrl.sector.doorMaxHeight" validate="ctrl.validateInteger(value)"
-				ng-change="ctrl.applyToAllSelected('doorMaxHeight')">
+		<div class="form-group" ng-show="ctrl.sector.door">
+			<label>Door max height</label>
+			<span>
+				<input type="text" ng-model="ctrl.sector.doorMaxHeight" validate="ctrl.validateInteger(value)"
+					ng-change="ctrl.applyToAllSelected('doorMaxHeight')">
+			</span>
 		</div>
 
-		<div class="menu-label">Elevator</div>
-		<div class="menu-field">
-			<input type="checkbox" ng-model="ctrl.sector.elevator" ng-change="ctrl.onElevatorChange()">
+		<div class="form-group">
+			<label>Elevator</label>
+			<span>
+				<input type="checkbox" ng-model="ctrl.sector.elevator" ng-change="ctrl.onElevatorChange()">
+			</span>
 		</div>
 
-		<div class="menu-label" ng-show="ctrl.sector.elevator">Elevator max height</div>
-		<div class="menu-field" ng-show="ctrl.sector.elevator">
-			<input type="text" ng-model="ctrl.sector.elevatorMaxHeight" validate="ctrl.validateInteger(value)"
-				ng-change="ctrl.applyToAllSelected('elevatorMaxHeight')">
+		<div class="form-group" ng-show="ctrl.sector.elevator">
+			<label>Elevator max height</label>
+			<span>
+				<input type="text" ng-model="ctrl.sector.elevatorMaxHeight" validate="ctrl.validateInteger(value)"
+					ng-change="ctrl.applyToAllSelected('elevatorMaxHeight')">
+			</span>
 		</div>
 
-		<div class="menu-label" ng-show="ctrl.sector.door || ctrl.sector.elevator">Use vertex colors</div>
-		<div class="menu-field" ng-show="ctrl.sector.door || ctrl.sector.elevator">
-			<input type="checkbox" ng-model="ctrl.sector.useVertexColors" ng-change="ctrl.applyToAllSelected('useVertexColors')">
+		<div class="form-group" ng-show="ctrl.sector.door || ctrl.sector.elevator">
+			<label>Use vertex colors</label>
+			<span>
+				<input type="checkbox" ng-model="ctrl.sector.useVertexColors" ng-change="ctrl.applyToAllSelected('useVertexColors')">
+			</span>
 		</div>
 
-		<div class="menu-label" ng-show="ctrl.sector.elevator && !ctrl.sector.useVertexColors">Floor texture</div>
-		<div class="menu-field" ng-show="ctrl.sector.elevator && !ctrl.sector.useVertexColors">
-			<input type="text" ng-model="ctrl.sector.floorTexId" ng-change="ctrl.applyToAllSelected('floorTexId')">
+		<div class="form-group" ng-show="ctrl.sector.elevator && !ctrl.sector.useVertexColors">
+			<label>Floor texture</label>
+			<span>
+				<input type="text" ng-model="ctrl.sector.floorTexId" ng-change="ctrl.applyToAllSelected('floorTexId')">
+			</span>
 		</div>
 
-		<div class="menu-label" ng-show="ctrl.sector.door && !ctrl.sector.useVertexColors">Ceiling texture</div>
-		<div class="menu-field" ng-show="ctrl.sector.door && !ctrl.sector.useVertexColors">
-			<input type="text" ng-model="ctrl.sector.ceilTexId" ng-change="ctrl.applyToAllSelected('ceilTexId')">
+		<div class="form-group" ng-show="ctrl.sector.door && !ctrl.sector.useVertexColors">
+			<label>Ceiling texture</label>
+			<span>
+				<input type="text" ng-model="ctrl.sector.ceilTexId" ng-change="ctrl.applyToAllSelected('ceilTexId')">
+			</span>
 		</div>
 
-		<div class="menu-label" ng-show="(ctrl.sector.door || ctrl.sector.elevator) && !ctrl.sector.useVertexColors">Side texture</div>
-		<div class="menu-field" ng-show="(ctrl.sector.door || ctrl.sector.elevator) && !ctrl.sector.useVertexColors">
-			<input type="text" ng-model="ctrl.sector.sideTexId" ng-change="ctrl.applyToAllSelected('sideTexId')">
+		<div class="form-group" ng-show="(ctrl.sector.door || ctrl.sector.elevator) && !ctrl.sector.useVertexColors">
+			<label>Side texture</label>
+			<span>
+				<input type="text" ng-model="ctrl.sector.sideTexId" ng-change="ctrl.applyToAllSelected('sideTexId')">
+			</span>
 		</div>
 
-		<div class="menu-label">Light level</div>
-		<div class="menu-field">
-			<input type="text" ng-model="ctrl.sector.lightLevel" validate="ctrl.validateLightLevel(value)"
-				ng-change="ctrl.applyToAllSelected('lightLevel')">
+		<div class="form-group">
+			<label>Light level</label>
+			<span>
+				<input type="text" ng-model="ctrl.sector.lightLevel" validate="ctrl.validateLightLevel(value)"
+					ng-change="ctrl.applyToAllSelected('lightLevel')">
+			</span>
 		</div>
 
-		<div class="menu-label">Light color</div>
-		<div class="menu-field">
-			<input type="color" ng-model="ctrl.sector.lightColorStyle" ng-change="ctrl.onLightColorChange()">
+		<div class="form-group">
+			<label>Light color</label>
+			<span>
+				<input type="color" ng-model="ctrl.sector.lightColorStyle" ng-change="ctrl.onLightColorChange()">
+			</span>
 		</div>
 	</div>
 </span>
