@@ -1,20 +1,24 @@
 <div class="segment-tools">
-	<div class="menu-label">Segment count</div>
-	<div class="menu-field">
-		<p>{{ctrl.count}}</p>
+	<div class="form-group">
+		<label>Count</label>
+		<span>
+			{{ctrl.count}}
+		</span>
 	</div>
 
-	<div class="menu-label">Connect only existing</div>
-	<div class="menu-field">
-		<input type="checkbox" ng-model="ctrl.connectOnlyExisting">
+	<div class="form-group">
+		<label>Connect only existing</label>
+		<span>
+			<boolean-field ng-model="ctrl.connectOnlyExisting"></boolean-field>
+		</span>
 	</div>
 
-	<div class="menu-label">Show normals</div>
-	<div class="menu-field">
-		<input type="checkbox" ng-model="ctrl.mapManager.showSegmentNormals">
+	<div class="form-group">
+		<label>Show normals</label>
+		<span>
+			<boolean-field ng-model="ctrl.mapManager.showSegmentNormals"></boolean-field>
+		</span>
 	</div>
-
-	<div class="menu-separator"></div>
 
 	<div class="menu-label wide-label">User-drawn segments</div>
 	<div class="menu-field">

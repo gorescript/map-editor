@@ -4,6 +4,12 @@ var app = angular.module("map-editor", [
 	"ui.bootstrap"
 ]);
 
+import booleanField from "./common/booleanField";
+app.directive("booleanField", booleanField);
+
+import collapsiblePanel from "./common/collapsiblePanel";
+app.directive("collapsiblePanel", collapsiblePanel);
+
 import validate from "./common/validate";
 app.directive("validate", validate);
 

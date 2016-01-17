@@ -16,7 +16,7 @@
 		</button>
 	</div>
 
-	<div class="panel panel-primary">
+	<div class="panel panel-primary" collapsible-panel collapsed>
 		<div class="panel-heading">
 			Map
 		</div>
@@ -31,7 +31,7 @@
 			<div class="form-group">
 				<label>Has script file</label>
 				<span>
-					<input type="checkbox" ng-model="ctrl.mapManager.map.hasScript">
+					<boolean-field ng-model="ctrl.mapManager.map.hasScript"></boolean-field>
 				</span>
 			</div>
 
@@ -54,27 +54,11 @@
 		</div>
 	</div>
 
-	<div class="panel panel-primary">
+	<div class="panel panel-primary" collapsible-panel collapsed>
 		<div class="panel-heading">
 			General
 		</div>
 		<div class="panel-body">
-			<div class="form-group">
-				<label>Mode</label>
-				<span>
-					<div class="btn-group editor-mode">
-						<label class="btn btn-primary" ng-model="ctrl.layerTools[ctrl.layer].mode" uib-btn-radio="ctrl.EditorModes.Selecting"
-							ng-change="ctrl.onEditorModeChange()" title="Select">
-							<i class="fa fa-mouse-pointer"></i>
-						</label>
-						<label class="btn btn-primary" ng-model="ctrl.layerTools[ctrl.layer].mode" uib-btn-radio="ctrl.EditorModes.Drawing"
-							ng-disabled="ctrl.layer === ctrl.MapLayers.Sector" ng-change="ctrl.onEditorModeChange()" title="Draw">
-							<i class="fa fa-paint-brush"></i>
-						</label>
-					</div>
-				</span>
-			</div>
-
 			<div class="form-group">
 				<label>Position</label>
 				<span id="position-field"></span>
@@ -83,7 +67,7 @@
 			<div class="form-group">
 				<label>Snap to grid</label>
 				<span>
-					<input type="checkbox" ng-model="ctrl.mapManager.snapToGrid">
+					<boolean-field ng-model="ctrl.mapManager.snapToGrid"></boolean-field>
 				</span>
 			</div>
 
@@ -97,21 +81,39 @@
 		</div>
 	</div>
 
-	<div class="panel panel-primary">
+	<div class="panel panel-primary layer-panel" collapsible-panel>
 		<div class="panel-heading">
 			Layer
 		</div>
-		<div class="btn-group layer-buttons">
-			<label class="btn btn-primary" style="width: 30%" ng-model="ctrl.layer" uib-btn-radio="ctrl.MapLayers.Segment">Segment</label>
-			<label class="btn btn-primary" style="width: 24%" ng-model="ctrl.layer" uib-btn-radio="ctrl.MapLayers.Sector">Sector</label>
-			<label class="btn btn-primary" style="width: 24%" ng-model="ctrl.layer" uib-btn-radio="ctrl.MapLayers.Entity">Entity</label>
-			<label class="btn btn-primary" style="width: 22%" ng-model="ctrl.layer" uib-btn-radio="ctrl.MapLayers.Zone">Zone</label>
-		</div>
 		<div class="panel-body">
-			<segment-tools ng-show="ctrl.layer === ctrl.MapLayers.Segment"></segment-tools>
-			<sector-tools ng-show="ctrl.layer === ctrl.MapLayers.Sector"></sector-tools>
-			<entity-tools ng-show="ctrl.layer === ctrl.MapLayers.Entity"></entity-tools>
-			<zone-tools ng-show="ctrl.layer === ctrl.MapLayers.Zone"></zone-tools>
+			<div class="btn-group layer-buttons">
+				<label class="btn btn-primary" style="width: 30%" ng-model="ctrl.layer" uib-btn-radio="ctrl.MapLayers.Segment">Segment</label>
+				<label class="btn btn-primary" style="width: 24%" ng-model="ctrl.layer" uib-btn-radio="ctrl.MapLayers.Sector">Sector</label>
+				<label class="btn btn-primary" style="width: 24%" ng-model="ctrl.layer" uib-btn-radio="ctrl.MapLayers.Entity">Entity</label>
+				<label class="btn btn-primary" style="width: 22%" ng-model="ctrl.layer" uib-btn-radio="ctrl.MapLayers.Zone">Zone</label>
+			</div>
+			<div class="inner">
+				<div class="form-group">
+					<label>Mode</label>
+					<span>
+						<div class="btn-group editor-mode">
+							<label class="btn btn-primary" ng-model="ctrl.layerTools[ctrl.layer].mode" uib-btn-radio="ctrl.EditorModes.Selecting"
+								ng-change="ctrl.onEditorModeChange()" title="Select">
+								<i class="fa fa-mouse-pointer"></i>
+							</label>
+							<label class="btn btn-primary" ng-model="ctrl.layerTools[ctrl.layer].mode" uib-btn-radio="ctrl.EditorModes.Drawing"
+								ng-disabled="ctrl.layer === ctrl.MapLayers.Sector" ng-change="ctrl.onEditorModeChange()" title="Draw">
+								<i class="fa fa-paint-brush"></i>
+							</label>
+						</div>
+					</span>
+				</div>
+
+				<segment-tools ng-show="ctrl.layer === ctrl.MapLayers.Segment"></segment-tools>
+				<sector-tools ng-show="ctrl.layer === ctrl.MapLayers.Sector"></sector-tools>
+				<entity-tools ng-show="ctrl.layer === ctrl.MapLayers.Entity"></entity-tools>
+				<zone-tools ng-show="ctrl.layer === ctrl.MapLayers.Zone"></zone-tools>
+			</div>
 		</div>
 	</div>
 </div>

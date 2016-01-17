@@ -18,7 +18,7 @@
 
 .toolbox > .panel {
 	border-radius: 0;
-	border-right: 0;
+	border: 0;
 	margin-bottom: 0;
 }
 
@@ -26,15 +26,40 @@
 	.panel-heading {
 		border-radius: 0;
 	}
+
+	.panel-heading.collapsed {
+		border-bottom: 1px solid #2e6da4;
+	}
 }
 
 .toolbox > .panel:last-child {
 	border-bottom: 0;
 }
 
+.toolbox > .layer-panel {
+	.panel-body {
+		padding: 0;
+	}
+
+	.panel-body > .inner {
+		padding: 15px;
+	}
+}
+
+.toolbox .btn-group.editor-mode {
+	.btn {
+		width: 40px;
+		height: 36px;
+	}
+}
+
 .toolbox {
 	.layer-buttons {
 		width: 100%;
+	}
+
+	.layer-buttons .btn:first-child {
+		border-left: 0;
 	}
 
 	.layer-buttons .btn {
@@ -48,6 +73,7 @@
 
 	.form-group > label {
 		width: 110px;
+		font-weight: normal;
 	}
 
 	.form-group > span {
