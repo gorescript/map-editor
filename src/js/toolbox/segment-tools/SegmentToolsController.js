@@ -1,5 +1,6 @@
 import EditorModes from "../../common/enums/EditorModes";
 import BaseToolsController from "../BaseToolsController";
+import AppConfig from "../../common/AppConfig";
 
 export default class SegmentToolsController extends BaseToolsController {
 	constructor() {
@@ -7,6 +8,7 @@ export default class SegmentToolsController extends BaseToolsController {
 
 		this.id = "segmentTools";
 		this.layer = GS.MapLayers.Segment;
+		this.AppConfig = AppConfig;
 
 		this.isDrawingLine = false;
 		this.connectOnlyExisting = false;

@@ -1,5 +1,6 @@
 import ActionTypes from "../common/enums/ActionTypes";
 import EditorModes from "../common/enums/EditorModes";
+import AppConfig from "../common/AppConfig";
 
 import CanvasManager from "../common/canvas/CanvasManager";
 
@@ -11,6 +12,8 @@ export default class ToolboxController {
 
 		this.MapLayers = GS.MapLayers;
 		this.EditorModes = EditorModes;
+
+		this.AppConfig = AppConfig;
 
 		this.canvas = new CanvasManager();
 
