@@ -1,9 +1,12 @@
 import EditorModes from "../../common/enums/EditorModes";
 import BaseToolsController from "../BaseToolsController";
+import AppConfig from "../../common/AppConfig";
 
 export default class ZoneToolsController extends BaseToolsController {
 	constructor() {
 		super();
+
+		this.AppConfig = AppConfig;
 
 		this.id = "zoneTools";
 		this.layer = GS.MapLayers.Zone;
