@@ -20,29 +20,9 @@
 		</span>
 	</div>
 
-	<div class="menu-label wide-label">User-drawn segments</div>
-	<div class="menu-field">
-		<input type="checkbox" ng-model="ctrl.mapManager.showUserDrawnSegments">
-	</div>
-
-	<div class="menu-label wide-label">Generated interior floor sides</div>
-	<div class="menu-field">
-		<input type="checkbox" ng-model="ctrl.mapManager.showGeneratedInteriorFloorSides">
-	</div>
-
-	<div class="menu-label wide-label">Generated interior ceiling sides</div>
-	<div class="menu-field">
-		<input type="checkbox" ng-model="ctrl.mapManager.showGeneratedInteriorCeilingSides">
-	</div>
-
-	<div class="menu-label wide-label">Generated exterior sides</div>
-	<div class="menu-field">
-		<input type="checkbox" ng-model="ctrl.mapManager.showGeneratedExteriorSides">
-	</div>
-
-	<div class="menu-label wide-label">TV screens and switches</div>
-	<div class="menu-field">
-		<input type="checkbox" ng-model="ctrl.mapManager.showTVScreens">
+	<div>
+		<multi-select button-text="ctrl.visibleTypesButtonText" items="ctrl.visibleTypes"
+			change="ctrl.onVisibleTypesChange()"></multi-select>
 	</div>
 
 	<div ng-show="ctrl.selectedObjects.length > 0">

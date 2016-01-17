@@ -12,6 +12,12 @@ export default class SegmentToolsController extends BaseToolsController {
 		this.connectOnlyExisting = false;
 	}
 
+	init(mapManager, actionLog, inCanvas, $timeout) {
+		super.init(mapManager, actionLog, inCanvas, $timeout);
+
+		this.initVisibleTypesMultiSelect();
+	}
+
 	onConvertToSectorsClick() {
 		this.mapManager.convertSegmentsToSectors(this.selected);
 		this.resetSelection();
@@ -136,6 +142,52 @@ export default class SegmentToolsController extends BaseToolsController {
 
 			this.segment.tvScreen = false;
 		});
+	}
+
+	initVisibleTypesMultiSelect() {
+		this.visibleTypes = [
+			{ propertyName: "showUserDrawnSegments", name: "User-drawn segments" },
+			{ propertyName: "showGeneratedInteriorFloorSides", name: "Generated interior floor sides" },
+			{ propertyName: "showGeneratedInteriorCeilingSides", name: "Generated interior ceiling sides" },
+			{ propertyName: "showGeneratedExteriorSides", name: "Generated exterior sides" },
+			{ propertyName: "showTVScreens", name: "TV screens and switches" }
+		];
+
+		var count = 0;
+
+		this.visibleTypes.forEach(x => {
+			x._selected = this.mapManager[x.propertyName];
+
+			if (x._selected) {
+				count++;
+			}
+		});
+
+		this.visibleTypesButtonText = this.getVisibleTypesText(count);
+	}
+
+	onVisibleTypesChange() {
+		var count = 0;
+
+		this.visibleTypes.forEach(x => {
+			this.mapManager[x.propertyName] = x._selected;
+
+			if (x._selected) {
+				count++;
+			}
+		});
+
+		this.visibleTypesButtonText = this.getVisibleTypesText(count);
+	}
+
+	getVisibleTypesText(count) {
+		var str = "Visible segment types: ";
+
+		if (count < 5) {
+			return str + count;
+		}
+
+		return str + " All";
 	}
 
 	applyToAllSelected(propertyName) {

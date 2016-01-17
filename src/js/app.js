@@ -4,6 +4,9 @@ var app = angular.module("map-editor", [
 	"ui.bootstrap"
 ]);
 
+import multiSelect from "./common/multi-select/multiSelect";
+app.directive("multiSelect", multiSelect);
+
 import booleanField from "./common/booleanField";
 app.directive("booleanField", booleanField);
 
