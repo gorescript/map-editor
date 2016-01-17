@@ -24,6 +24,7 @@
     "webpack": "^1.12.9"
   },
   "dependencies": {
+    "angular-ui-bootstrap": "^1.0.3",
     "gorescript": "git+https://git@github.com/gorescript/gorescript.git"
   }
 }

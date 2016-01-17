@@ -14,42 +14,64 @@
 		<input type="checkbox" ng-model="ctrl.mapManager.showSegmentNormals">
 	</div>
 
-	<div class="panel panel-default" ng-show="ctrl.selectedObjects.length > 0">
-		<div class="panel-heading">
-			Selection
+	<div class="menu-separator"></div>
+
+	<div class="menu-label wide-label">User-drawn segments</div>
+	<div class="menu-field">
+		<input type="checkbox" ng-model="ctrl.mapManager.showUserDrawnSegments">
+	</div>
+
+	<div class="menu-label wide-label">Generated interior floor sides</div>
+	<div class="menu-field">
+		<input type="checkbox" ng-model="ctrl.mapManager.showGeneratedInteriorFloorSides">
+	</div>
+
+	<div class="menu-label wide-label">Generated interior ceiling sides</div>
+	<div class="menu-field">
+		<input type="checkbox" ng-model="ctrl.mapManager.showGeneratedInteriorCeilingSides">
+	</div>
+
+	<div class="menu-label wide-label">Generated exterior sides</div>
+	<div class="menu-field">
+		<input type="checkbox" ng-model="ctrl.mapManager.showGeneratedExteriorSides">
+	</div>
+
+	<div class="menu-label wide-label">TV screens and switches</div>
+	<div class="menu-field">
+		<input type="checkbox" ng-model="ctrl.mapManager.showTVScreens">
+	</div>
+
+	<div ng-show="ctrl.selectedObjects.length > 0">
+		<div class="menu-label">Segment ID</div>
+		<div class="menu-field">
+			<p>{{ctrl.selectedId}}</p>
 		</div>
-		<div class="panel-body">
-			<div class="menu-label">Segment ID</div>
-			<div class="menu-field">
-				<p>{{ctrl.selectedId}}</p>
-			</div>
 
-			<div class="menu-label">Bottom Y</div>
-			<div class="menu-field">
-				<input type="text" ng-model="ctrl.segment.bottomY" validate="ctrl.validateInteger(value)"
-					ng-change="ctrl.applyToAllSelected('bottomY')">
-			</div>
+		<div class="menu-label">Bottom Y</div>
+		<div class="menu-field">
+			<input type="text" ng-model="ctrl.segment.bottomY" validate="ctrl.validateInteger(value)"
+				ng-change="ctrl.applyToAllSelected('bottomY')">
+		</div>
 
-			<div class="menu-label">Top Y</div>
-			<div class="menu-field">
-				<input type="text" ng-model="ctrl.segment.topY" validate="ctrl.validateInteger(value)"
-					ng-change="ctrl.applyToAllSelected('topY')">
-			</div>
+		<div class="menu-label">Top Y</div>
+		<div class="menu-field">
+			<input type="text" ng-model="ctrl.segment.topY" validate="ctrl.validateInteger(value)"
+				ng-change="ctrl.applyToAllSelected('topY')">
+		</div>
 
-			<div class="menu-label">TV screen</div>
-			<div class="menu-field">
-				<input type="checkbox" ng-model="ctrl.segment.tvScreen" ng-change="ctrl.onTVScreenChange()">
-			</div>
+		<div class="menu-label">TV screen</div>
+		<div class="menu-field">
+			<input type="checkbox" ng-model="ctrl.segment.tvScreen" ng-change="ctrl.onTVScreenChange()">
+		</div>
 
-			<div class="menu-label">Switch</div>
-			<div class="menu-field">
-				<input type="checkbox" ng-model="ctrl.segment.switch" ng-change="ctrl.onSwitchChange()">
-			</div>
+		<div class="menu-label">Switch</div>
+		<div class="menu-field">
+			<input type="checkbox" ng-model="ctrl.segment.switch" ng-change="ctrl.onSwitchChange()">
+		</div>
 
-			<div class="menu-label">Texture</div>
-			<div class="menu-field">
-				<input type="text" ng-model="ctrl.segment.texId" ng-change="ctrl.applyToAllSelected('texId')">
-			</div>
+		<div class="menu-label">Texture</div>
+		<div class="menu-field">
+			<input type="text" ng-model="ctrl.segment.texId" ng-change="ctrl.applyToAllSelected('texId')">
 		</div>
 	</div>
 

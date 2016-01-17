@@ -2,10 +2,56 @@
 }
 
 .toolbox {
-	.buttons {
+	.file-buttons {
+		border-top: 0;
+		padding: 5px;
+	}
+
+	.file-buttons {
 		button {
-			width: 49%;
-			margin-bottom: 5px;
+			width: 48px;
+			height: 48px;
+			font-size: 24px;
+		}
+	}
+}
+
+.toolbox > .panel {
+	border-radius: 0;
+	border-right: 0;
+	margin-bottom: 0;
+}
+
+.toolbox > .panel {
+	.panel-heading {
+		border-radius: 0;
+	}
+}
+
+.toolbox > .panel:last-child {
+	border-bottom: 0;
+}
+
+.toolbox {
+	.layer-buttons .btn {
+		border-radius: 0;
+	}
+
+	.form-group {
+		margin-bottom: 0;
+	}
+
+	.form-group > label {
+		width: 110px;
+	}
+
+	.form-group > span {
+		input[type=text], input[type=color] {
+			width: 100px;
+		}
+
+		.position-text {
+			width: 40px !important;
 		}
 	}
 }

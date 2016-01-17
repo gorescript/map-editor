@@ -1,81 +1,116 @@
 <div class="toolbox">
-	<div class="buttons">
+	<div class="panel panel-primary file-buttons">
 		<input type="file" id="field-import" class="hide">
 
-		<button type="button" class="btn btn-primary" ng-click="ctrl.clearMap()">New</button>
-		<button type="button" class="btn btn-primary" ng-click="ctrl.onSaveMapClick()">Save</button>
-		<button type="button" class="btn btn-primary" ng-click="ctrl.importMap()">Import</button>
-		<button type="button" class="btn btn-primary" ng-click="ctrl.mapManager.downloadMap()">Download</button>
+		<button type="button" class="btn btn-primary" title="New" ng-click="ctrl.clearMap()">
+			<i class="fa fa-file"></i>
+		</button>
+		<button type="button" class="btn btn-primary" title="Save" ng-click="ctrl.onSaveMapClick()">
+			<i class="fa fa-save"></i>
+		</button>
+		<button type="button" class="btn btn-primary" title="Import" ng-click="ctrl.importMap()">
+			<i class="fa fa-upload"></i>
+		</button>
+		<button type="button" class="btn btn-primary" title="Download" ng-click="ctrl.mapManager.downloadMap()">
+			<i class="fa fa-download"></i>
+		</button>
 	</div>
 
-	<div class="menu-label">Map name</div>
-	<div class="menu-field">
-		<input type="text" ng-model="ctrl.mapManager.map.name" validate="ctrl.validateMapName(value)">
-	</div>
-
-	<div class="menu-label">Has script file</div>
-	<div class="menu-field">
-		<input type="checkbox" ng-model="ctrl.mapManager.map.hasScript">
-	</div>
-
-	<div class="menu-label">Collision triangles</div>
-	<div class="menu-field"><p>{{ctrl.mapManager.map.triangleCount}}</p></div>
-
-	<div class="menu-label">Position</div>
-	<div class="menu-field"><p id="position-field"></p></div>
-
-	<div class="menu-label">Start position</div>
-	<div class="menu-field">
-		<p>X:</p><input type="text" class="pos-textbox" ng-model="ctrl.mapManager.map.playerStartPosition.x"
-			validate="ctrl.validateInteger(value)">
-		<p>Y:</p><input type="text" class="pos-textbox" ng-model="ctrl.mapManager.map.playerStartPosition.y"
-			validate="ctrl.validateInteger(value)">
-	</div>
-
-	<div class="menu-label">Snap to grid</div>
-	<div class="menu-field">
-		<input type="checkbox" ng-model="ctrl.mapManager.snapToGrid">
-	</div>
-
-	<div class="menu-label" ng-hide="!ctrl.mapManager.snapToGrid">Grid cell size</div>
-	<div class="menu-field" ng-hide="!ctrl.mapManager.snapToGrid">
-		<input type="text" ng-model="ctrl.mapManager.map.cellSize" validate="ctrl.validatePositiveInteger(value)"
-			class="pos-textbox">
-	</div>
-
-	<div class="menu-two-column-field">
-		<div id="radio-layer" class="centered">
-			<input type="radio" id="radio-layer-seg" name="radio-layer" ng-model="ctrl.layer"
-				ng-value="ctrl.MapLayers.Segment">
-			<label for="radio-layer-seg">Segments</label>
-			<input type="radio" id="radio-layer-sec" name="radio-layer" ng-model="ctrl.layer"
-				ng-value="ctrl.MapLayers.Sector">
-			<label for="radio-layer-sec">Sectors</label>
-			<input type="radio" id="radio-layer-ntt" name="radio-layer" ng-model="ctrl.layer"
-				ng-value="ctrl.MapLayers.Entity">
-			<label for="radio-layer-ntt">Entities</label>
-			<input type="radio" id="radio-layer-zone" name="radio-layer" ng-model="ctrl.layer"
-				ng-value="ctrl.MapLayers.Zone">
-			<label for="radio-layer-zone">Zones</label>
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			Map
 		</div>
-	</div>
+		<div class="panel-body">
+			<div class="form-group">
+				<label>Map name</label>
+				<span>
+					<input type="text" ng-model="ctrl.mapManager.map.name" validate="ctrl.validateMapName(value)">
+				</span>
+			</div>
 
-	<span ng-hide="ctrl.layer === ctrl.MapLayers.Sector">
-		<div class="menu-label">Editor mode</div>
-		<div class="menu-field">
-			<div id="radio-editor-mode">
-				<input type="radio" id="radio-editor-mode-draw" name="radio-editor-mode" ng-model="ctrl.layerTools[ctrl.layer].mode"
-					ng-value="ctrl.EditorModes.Drawing" ng-change="ctrl.onEditorModeChange()">
-				<label for="radio-editor-mode-draw">Draw</label>
-				<input type="radio" id="radio-editor-mode-select" name="radio-editor-mode" ng-model="ctrl.layerTools[ctrl.layer].mode"
-					ng-value="ctrl.EditorModes.Selecting" ng-change="ctrl.onEditorModeChange()">
-				<label for="radio-editor-mode-select">Select</label>
+			<div class="form-group">
+				<label>Has script file</label>
+				<span>
+					<input type="checkbox" ng-model="ctrl.mapManager.map.hasScript">
+				</span>
+			</div>
+
+			<div class="form-group">
+				<label>Start position</label>
+				<span>
+					X:<input type="text" class="position-text" ng-model="ctrl.mapManager.map.playerStartPosition.x"
+						validate="ctrl.validateInteger(value)">
+					Y:<input type="text" class="position-text" ng-model="ctrl.mapManager.map.playerStartPosition.y"
+						validate="ctrl.validateInteger(value)">
+				</span>
+			</div>
+
+			<div class="form-group">
+				<label>Collision triangles</label>
+				<span>
+					{{ctrl.mapManager.map.triangleCount}}
+				</span>
 			</div>
 		</div>
-	</span>
+	</div>
 
-	<segment-tools ng-show="ctrl.layer === ctrl.MapLayers.Segment"></segment-tools>
-	<sector-tools ng-show="ctrl.layer === ctrl.MapLayers.Sector"></sector-tools>
-	<entity-tools ng-show="ctrl.layer === ctrl.MapLayers.Entity"></entity-tools>
-	<zone-tools ng-show="ctrl.layer === ctrl.MapLayers.Zone"></zone-tools>
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			General
+		</div>
+		<div class="panel-body">
+			<div class="form-group">
+				<label>Mode</label>
+				<span>
+					<div class="btn-group editor-mode">
+						<label class="btn btn-primary" ng-model="ctrl.layerTools[ctrl.layer].mode" uib-btn-radio="ctrl.EditorModes.Selecting"
+							ng-change="ctrl.onEditorModeChange()" title="Select">
+							<i class="fa fa-mouse-pointer"></i>
+						</label>
+						<label class="btn btn-primary" ng-model="ctrl.layerTools[ctrl.layer].mode" uib-btn-radio="ctrl.EditorModes.Drawing"
+							ng-disabled="ctrl.layer === ctrl.MapLayers.Sector" ng-change="ctrl.onEditorModeChange()" title="Draw">
+							<i class="fa fa-paint-brush"></i>
+						</label>
+					</div>
+				</span>
+			</div>
+
+			<div class="form-group">
+				<label>Position</label>
+				<span id="position-field"></span>
+			</div>
+
+			<div class="form-group">
+				<label>Snap to grid</label>
+				<span>
+					<input type="checkbox" ng-model="ctrl.mapManager.snapToGrid">
+				</span>
+			</div>
+
+			<div class="form-group" ng-hide="!ctrl.mapManager.snapToGrid">
+				<label>Grid cell size</label>
+				<span>
+					<input type="text" class="pos-textbox" ng-model="ctrl.mapManager.map.cellSize"
+						validate="ctrl.validatePositiveInteger(value)">
+				</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			Layer
+		</div>
+		<div class="btn-group layer-buttons">
+			<label class="btn btn-primary" ng-model="ctrl.layer" uib-btn-radio="ctrl.MapLayers.Segment">Segment</label>
+			<label class="btn btn-primary" ng-model="ctrl.layer" uib-btn-radio="ctrl.MapLayers.Sector">Sector</label>
+			<label class="btn btn-primary" ng-model="ctrl.layer" uib-btn-radio="ctrl.MapLayers.Entity">Entity</label>
+			<label class="btn btn-primary" ng-model="ctrl.layer" uib-btn-radio="ctrl.MapLayers.Zone">Zone</label>
+		</div><div class="panel-body">
+			<segment-tools ng-show="ctrl.layer === ctrl.MapLayers.Segment"></segment-tools>
+			<sector-tools ng-show="ctrl.layer === ctrl.MapLayers.Sector"></sector-tools>
+			<entity-tools ng-show="ctrl.layer === ctrl.MapLayers.Entity"></entity-tools>
+			<zone-tools ng-show="ctrl.layer === ctrl.MapLayers.Zone"></zone-tools>
+		</div>
+	</div>
 </div>

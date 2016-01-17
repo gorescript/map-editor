@@ -16,6 +16,15 @@ export default class ToolboxController {
 
 		this.layer = GS.MapLayers.Segment;
 
+		this.MenuCategory = {
+			A: 0,
+			B: 1,
+			C: 2,
+			D: 3
+		};
+
+		this.menuCategory = this.MenuCategory.A;
+
 		this.keys = {
 			Escape: 27,
 			Delete: 46,

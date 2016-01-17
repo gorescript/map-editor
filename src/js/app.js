@@ -1,4 +1,8 @@
-var app = angular.module("map-editor", []);
+import "angular-ui-bootstrap";
+
+var app = angular.module("map-editor", [
+	"ui.bootstrap"
+]);
 
 import validate from "./common/validate";
 app.directive("validate", validate);
