@@ -9,14 +9,14 @@
 	<div class="form-group" ng-show="ctrl.AppConfig.advancedOptions">
 		<label>Connect only existing</label>
 		<span>
-			<boolean-field ng-model="ctrl.connectOnlyExisting"></boolean-field>
+			<input type="checkbox" ng-model="ctrl.connectOnlyExisting">
 		</span>
 	</div>
 
 	<div class="form-group" ng-show="ctrl.AppConfig.advancedOptions">
 		<label>Show normals</label>
 		<span>
-			<boolean-field ng-model="ctrl.mapManager.showSegmentNormals"></boolean-field>
+			<input type="checkbox" ng-model="ctrl.mapManager.showSegmentNormals">
 		</span>
 	</div>
 
@@ -25,37 +25,49 @@
 			change="ctrl.onVisibleTypesChange()"></multi-select>
 	</div>
 
-	<div ng-show="ctrl.selectedObjects.length > 0">
-		<div class="menu-label">Segment ID</div>
-		<div class="menu-field">
-			<p>{{ctrl.selectedId}}</p>
+	<div ng-show="ctrl.selectedObjects.length > 0" style="margin-top: 5px;">
+		<div class="form-group">
+			<label>ID</label>
+			<span>
+				{{ctrl.selectedId}}
+			</span>
 		</div>
 
-		<div class="menu-label">Bottom Y</div>
-		<div class="menu-field">
-			<input type="text" ng-model="ctrl.segment.bottomY" validate="ctrl.validateInteger(value)"
-				ng-change="ctrl.applyToAllSelected('bottomY')">
+		<div class="form-group">
+			<label>Bottom Y</label>
+			<span>
+				<input type="text" ng-model="ctrl.segment.bottomY" validate="ctrl.validateInteger(value)"
+					ng-change="ctrl.applyToAllSelected('bottomY')">
+			</span>
 		</div>
 
-		<div class="menu-label">Top Y</div>
-		<div class="menu-field">
-			<input type="text" ng-model="ctrl.segment.topY" validate="ctrl.validateInteger(value)"
-				ng-change="ctrl.applyToAllSelected('topY')">
+		<div class="form-group">
+			<label>Top Y</label>
+			<span>
+				<input type="text" ng-model="ctrl.segment.topY" validate="ctrl.validateInteger(value)"
+					ng-change="ctrl.applyToAllSelected('topY')">
+			</span>
 		</div>
 
-		<div class="menu-label">TV screen</div>
-		<div class="menu-field">
-			<input type="checkbox" ng-model="ctrl.segment.tvScreen" ng-change="ctrl.onTVScreenChange()">
+		<div class="form-group">
+			<label>TV screen</label>
+			<span>
+				<input type="checkbox" ng-model="ctrl.segment.tvScreen" ng-change="ctrl.onTVScreenChange()">
+			</span>
 		</div>
 
-		<div class="menu-label">Switch</div>
-		<div class="menu-field">
-			<input type="checkbox" ng-model="ctrl.segment.switch" ng-change="ctrl.onSwitchChange()">
+		<div class="form-group">
+			<label>Switch</label>
+			<span>
+				<input type="checkbox" ng-model="ctrl.segment.switch" ng-change="ctrl.onSwitchChange()">
+			</span>
 		</div>
 
-		<div class="menu-label">Texture</div>
-		<div class="menu-field">
-			<input type="text" ng-model="ctrl.segment.texId" ng-change="ctrl.applyToAllSelected('texId')">
+		<div class="form-group" ng-show="ctrl.segment.tvScreen">
+			<label>Texture</label>
+			<span>
+				<input type="text" ng-model="ctrl.segment.texId" ng-change="ctrl.applyToAllSelected('texId')">
+			</span>
 		</div>
 	</div>
 

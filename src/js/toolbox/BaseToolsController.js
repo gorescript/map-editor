@@ -7,7 +7,7 @@ export default class BaseToolsController {
 		this.layer = undefined;
 
 		this.isSelecting = false;
-		this.mode = EditorModes.Drawing;
+		this.mode = EditorModes.Selecting;
 
 		this.selected = {};
 		this.selectedObjects = [];

@@ -31,7 +31,7 @@
 			<div class="form-group">
 				<label>Has script file</label>
 				<span>
-					<boolean-field ng-model="ctrl.mapManager.map.hasScript"></boolean-field>
+					<input type="checkbox" ng-model="ctrl.mapManager.map.hasScript">
 				</span>
 			</div>
 
@@ -62,7 +62,7 @@
 			<div class="form-group">
 				<label>Advanced options</label>
 				<span>
-					<boolean-field ng-model="ctrl.AppConfig.advancedOptions"></boolean-field>
+					<input type="checkbox" ng-model="ctrl.AppConfig.advancedOptions">
 				</span>
 			</div>
 
@@ -74,7 +74,7 @@
 			<div class="form-group">
 				<label>Snap to grid</label>
 				<span>
-					<boolean-field ng-model="ctrl.mapManager.snapToGrid"></boolean-field>
+					<input type="checkbox" ng-model="ctrl.mapManager.snapToGrid">
 				</span>
 			</div>
 
@@ -110,7 +110,7 @@
 							</label>
 							<label class="btn btn-primary" ng-model="ctrl.layerTools[ctrl.layer].mode" uib-btn-radio="ctrl.EditorModes.Drawing"
 								ng-disabled="ctrl.layer === ctrl.MapLayers.Sector" ng-change="ctrl.onEditorModeChange()" title="Draw">
-								<i class="fa fa-paint-brush"></i>
+								<i class="fa fa-pencil"></i>
 							</label>
 						</div>
 					</span>
