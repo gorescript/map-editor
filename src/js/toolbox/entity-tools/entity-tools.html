@@ -1,41 +1,51 @@
 <div class="entity-tools">
-	<div class="menu-label">Entity count</div>
-	<div class="menu-field">
-		<p>{{ctrl.count}}</p>
+	<div class="form-group">
+		<label>Count</label>
+		<span>
+			{{ctrl.count}}
+		</span>
 	</div>
 
-	<div class="menu-two-column-field no-fixed-height">
+	<div class="entity-types">
 		<select ng-options="item as item.name for item in ctrl.entityTypes" size="10"
 			ng-model="ctrl.selectedEntityType">
 		</select>
 	</div>
 
 	<div ng-show="ctrl.selectedObjects.length > 0">
-		<div class="menu-label">Entity ID</div>
-		<div class="menu-field">
-			<p>{{ctrl.selectedId}}</p>
+		<div class="form-group">
+			<label>ID</label>
+			<span>
+				{{ctrl.selectedId}}
+			</span>
 		</div>
 
-		<div class="menu-label">Y</div>
-		<div class="menu-field">
-			<input type="text" ng-model="ctrl.entity.y" validate="ctrl.validateInteger(value)"
-				ng-change="ctrl.applyToAllSelected('y')">
+		<div class="form-group">
+			<label>Y</label>
+			<span>
+				<input type="text" ng-model="ctrl.entity.y" validate="ctrl.validateInteger(value)"
+					ng-change="ctrl.applyToAllSelected('y')">
+			</span>
 		</div>
 
-		<div class="menu-label" ng-show="ctrl.entity.showRotation">Rotation (deg)</div>
-		<div class="menu-field" ng-show="ctrl.entity.showRotation">
-			<input type="text" ng-model="ctrl.entity.rotation" validate="ctrl.validateAngle(value)"
-				ng-change="ctrl.applyToAllSelected('rotation')">
+		<div class="form-group" ng-show="ctrl.entity.showRotation">
+			<label>Rotation (deg)</label>
+			<span>
+				<input type="text" ng-model="ctrl.entity.rotation" validate="ctrl.validateAngle(value)"
+					ng-change="ctrl.applyToAllSelected('rotation')">
+			</span>
 		</div>
 
-		<div class="menu-label">Static</div>
-		<div class="menu-field">
-			<input type="checkbox" ng-model="ctrl.entity.isStatic"
-				ng-change="ctrl.applyToAllSelected('isStatic')">
+		<div class="form-group">
+			<label>Static</label>
+			<span>
+				<input type="checkbox" ng-model="ctrl.entity.isStatic"
+					ng-change="ctrl.applyToAllSelected('isStatic')">
+			</span>
 		</div>
-	</div>
 
-	<div class="buttons">
-		<button type="button" class="btn btn-primary" ng-click="ctrl.onComputeYClick()">Compute Y for selected entities</button>
+		<div class="buttons">
+			<button type="button" class="btn btn-primary" ng-click="ctrl.onComputeYClick()">Compute Y for selected entities</button>
+		</div>
 	</div>
 </div>
