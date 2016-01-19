@@ -4,6 +4,9 @@ var app = angular.module("map-editor", [
 	"ui.bootstrap"
 ]);
 
+import JsonStorageService from "./common/services/JsonStorageService";
+app.service("JsonStorageService", JsonStorageService);
+
 import convertToNumber from "./common/convertToNumber";
 app.directive("convertToNumber", convertToNumber);
 
