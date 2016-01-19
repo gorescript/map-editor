@@ -10,9 +10,6 @@ app.directive("convertToNumber", convertToNumber);
 import multiSelect from "./common/multi-select/multiSelect";
 app.directive("multiSelect", multiSelect);
 
-import booleanField from "./common/booleanField";
-app.directive("booleanField", booleanField);
-
 import collapsiblePanel from "./common/collapsiblePanel";
 app.directive("collapsiblePanel", collapsiblePanel);
 
