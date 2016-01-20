@@ -1,6 +1,6 @@
 var gulp = require("gulp");
 var del = require("del");
 
-gulp.task("clean", function() {
-	del.sync(global.distFolder);
+gulp.task("clean", function () {
+	return del([global.distFolder]);
 });

@@ -10,7 +10,28 @@ devConfig.debug = true;
 var devCompiler = webpack(devConfig);
 
 gulp.task("webpack", function(cb) {
-	devCompiler.run(function(err, stats) {
+	runWebpack(devCompiler, cb);
+});
+
+gulp.task("webpack-prod", function(cb) {
+	var config = Object.create(webpackConfig);
+
+	config.plugins = config.plugins || [];
+	config.plugins = config.plugins.concat(
+		new webpack.optimize.UglifyJsPlugin({
+			compress: false,
+			sourceMap: false,
+			mangle: false
+		})
+	);
+
+	var prodCompiler = webpack(config);
+
+	runWebpack(prodCompiler, cb);
+});
+
+function runWebpack(compiler, cb) {
+	compiler.run(function(err, stats) {
 		if (err) {
 			throw new gutil.PluginError("webpack", err);
 		}
@@ -21,4 +42,4 @@ gulp.task("webpack", function(cb) {
 
 		cb();
 	});
-});
+}

@@ -7,7 +7,7 @@ requireDir("./gulp-config");
 global.distFolder = "./dist";
 
 gulp.task("default", function() {
-	run();
+	runSequence("clean", "copy", "vendor", "webpack", "less");
 
 	gulp.watch([
 		"./src/index.html",
@@ -23,6 +23,6 @@ gulp.task("default", function() {
 	], ["webpack"]);
 });
 
-function run() {
-	runSequence("clean", "copy", "vendor", "webpack", "less");
-}
+gulp.task("prod", function() {
+	runSequence("clean", "copy", "vendor", "webpack-prod", "less");
+});
