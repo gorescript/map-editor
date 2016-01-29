@@ -6,6 +6,8 @@ import CanvasManager from "../common/canvas/CanvasManager";
 
 import MapManager from "../core/MapManager";
 
+import SampleMap from "../common/sampleMap";
+
 export default class ToolboxController {
 	constructor($timeout) {
 		this.$timeout = $timeout;
@@ -115,6 +117,11 @@ export default class ToolboxController {
 		this.saveMap(map);
 	}
 
+	onLoadSampleMapClick() {
+		window.localStorage.testMap = SampleMap;
+		window.location.reload();
+	}
+
 	validateMapName(value) {
 		var validate = (name) => {
 			var re = /^[0-9a-zA-Z_]+$/;
@@ -162,6 +169,16 @@ export default class ToolboxController {
 
 	importTestMap() {
 		var testMap = window.localStorage.testMap;
+
+		if (!testMap) {
+			var loadedSampleMapOnce = window.localStorage.loadedSampleMapOnce;
+
+			if (!loadedSampleMapOnce) {
+				window.localStorage.loadedSampleMapOnce = true;
+				window.localStorage.testMap = SampleMap;
+				testMap = SampleMap;
+			}
+		}
 
 		if (testMap) {
 			this.mapManager.importMap(testMap);
