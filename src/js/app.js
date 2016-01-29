@@ -34,6 +34,9 @@ app.directive("zoneTools", zoneTools);
 import toolbox from "./toolbox/toolbox";
 app.component("toolbox", toolbox);
 
+import cookieLawWarning from "./common/cookie-law-warning/cookieLawWarning";
+app.component("cookieLawWarning", cookieLawWarning);
+
 app.config(() => {
 });
 
