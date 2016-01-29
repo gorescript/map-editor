@@ -251,21 +251,17 @@ export default class ToolboxController {
 		if (!GS.InputHelper.keysPressed && GS.InputHelper.isKeyDown(this.keys.Delete)) {
 			this.layerTools[this.layer].onDelete();
 		}
-
-		if (!GS.InputHelper.keysPressed && GS.InputHelper.ctrl && GS.InputHelper.isKeyDown(this.keys.Minus)) {
-			this.mapManager.modifyZoom(-1);
-		}
-
-		if (!GS.InputHelper.keysPressed && GS.InputHelper.ctrl && GS.InputHelper.isKeyDown(this.keys.Plus)) {
-			this.mapManager.modifyZoom(1);
-		}
-
-		if (!GS.InputHelper.keysPressed && GS.InputHelper.ctrl && GS.InputHelper.isKeyDown(this.keys.Zero)) {
-			this.mapManager.resetZoom();
-		}
 	}
 
 	processZoom() {
+		var mx = GS.InputHelper.mouseX;
+		var my = GS.InputHelper.mouseY;
+
+		if (!this.inCanvas(mx, my)) {
+			GS.InputHelper.mouseWheelEvents.length = 0;
+			return;
+		}
+
 		while (GS.InputHelper.mouseWheelEvents.length > 0) {
 			var delta = GS.InputHelper.mouseWheelEvents.shift();
 

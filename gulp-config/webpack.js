@@ -37,7 +37,8 @@ function runWebpack(compiler, cb) {
 		}
 
 		gutil.log("[webpack]", stats.toString({
-			colors: true
+			colors: true,
+			chunks: false
 		}));
 
 		cb();
