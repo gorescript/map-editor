@@ -1,6 +1,5 @@
 var files = [
 	"jquery.min",
-	"jszip.min",
 	"three.min",
 	"polyk",
 	"angular.min"

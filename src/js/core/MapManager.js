@@ -893,21 +893,26 @@ MapManager.prototype = {
 		}
 	},
 
-	downloadAsZip: function(filename, contentStr) {
-		var zip = new JSZip();
-		zip.file(filename, contentStr);
-		var content = zip.generate();
-		location.href = "data:application/zip;base64," + content;
-	},
-
 	downloadMap: function() {
 		var json = JSON.stringify(this.map);
-		this.downloadAsZip("map.js", json);
-	},
+		var filename = "map.json";
 
-	getMap: function() {
-		return this.map;
-	},
+		if (!window.navigator.msSaveOrOpenBlob) {
+			let a = document.createElement("a");
+			a.href = "data:application/json;charset=utf-8," + encodeURIComponent(json);
+			a.target = "_blank";
+			a.download = filename;
+			a.style.display = "none";
+
+			document.body.appendChild(a);
+			a.click();
+
+			$(a).remove();
+		} else {
+			let blobObject = new Blob([json]);
+			window.navigator.msSaveOrOpenBlob(blobObject, filename);
+		}
+	}
 };
 
 THREE.EventDispatcher.prototype.apply(MapManager.prototype);
