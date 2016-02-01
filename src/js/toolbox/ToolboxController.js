@@ -113,8 +113,7 @@ export default class ToolboxController {
 	}
 
 	onSaveMapClick() {
-		var map = this.mapManager.getMap();
-		this.saveMap(map);
+		this.saveMap(this.mapManager.map);
 	}
 
 	onLoadSampleMapClick() {
