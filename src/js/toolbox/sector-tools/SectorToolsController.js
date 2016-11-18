@@ -28,7 +28,7 @@ export default class SectorTools extends BaseToolsController {
 	}
 
 	hexToStyle(hex) {
-		return ("#" + this.pad(hex.toString(16), 6));
+		return "#" + new THREE.Color(hex).getHexString();
 	}
 
 	styleToHex(style) {
